@@ -74,7 +74,7 @@ public class RegistationActivity extends AppCompatActivity implements View.OnCli
 
         String answer = new String();
         try {
-            answer = MainActivity.postRequest(e_mail.getText().toString(), password.getText().toString());
+            answer = MainActivity.postRequest(e_mail.getText().toString(), password.getText().toString(), "registration");
             answer = answer.replace("\"", "");
 
         } catch (Exception e) {
