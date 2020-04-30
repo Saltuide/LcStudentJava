@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+
+
 public class Log_inActivity extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -44,7 +46,11 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.log_in:
-                Log_in();
+                try {
+                    Log_in();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.registration_btn:
                 System.out.println("scjdsd");
@@ -57,37 +63,15 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void Log_in() {
+    private void Log_in() throws Exception {
         if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+        Map<String, String> response = RequestSender.requestLogin(Log_inActivity.this,
+                e_mail.getText().toString(), password.getText().toString());
 
-        String answer = new String();
-        try {
-            answer = MainActivity.postRequest(e_mail.getText().toString(), password.getText().toString(), "sign_in");
-            answer = answer.replace("\"", "");
-            System.out.println(answer);
-            //{"status": true, "is_authorized": false, "id": "dasha@ya.ru"}
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Properties props = new Properties();
-
-        try {
-            props.load(new StringReader(answer.substring(1, answer.length() - 1).replace(", ", "\n")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Map<String, String> parsedJSON = new HashMap<String, String>();
-
-        for (Map.Entry<Object, Object> e : props.entrySet()) {
-            parsedJSON.put((String)e.getKey(), (String)e.getValue());
-        }
-
-        if(parsedJSON.get("status").equals("true")){
+        if(response.get("status").equals("true")){
 
             //Храним в настройках приложения новые данные
             SharedPreferences.Editor ed = MainActivity.sPref.edit();

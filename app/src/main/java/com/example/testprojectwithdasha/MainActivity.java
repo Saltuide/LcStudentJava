@@ -40,41 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String postRequest(String login, String password, String request) throws Exception {
-        String req = "http://10.0.2.2:8000/" + request + "/";
-        final URL url = new URL(req);
-        final HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setDoOutput(true);
-        con.setDoInput(true);
-        con.setConnectTimeout(CONNECTION_TIMEOUT);
-        con.setReadTimeout(CONNECTION_TIMEOUT);
 
-        JSONObject body = new JSONObject();
-        body.put("email", login);
-        body.put("password", password);
-
-        String urlParameters = body.toString();
-
-        // Send post request
-        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.writeBytes(urlParameters);
-            wr.flush();
-        }
-
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()))) {
-
-            String line;
-            StringBuilder response = new StringBuilder();
-
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-            }
-            return response.toString();
-        }
-    }
 
 
     @Override

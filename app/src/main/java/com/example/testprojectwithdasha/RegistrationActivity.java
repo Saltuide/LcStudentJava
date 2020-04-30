@@ -48,7 +48,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.registration:
                 if (password.getText().toString().compareTo(repeat_password.getText().toString()) == 0) {
-                    registration();
+                    try {
+                        registration();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     System.out.println("passwords don't match");
                 }
@@ -59,36 +63,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void registration() {
+    private void registration() throws Exception {
         if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
 
-        String answer = new String();
-        try {
-            answer = MainActivity.postRequest(e_mail.getText().toString(), password.getText().toString(), "registration");
-            answer = answer.replace("\"", "");
+        Map<String, String> response = RequestSender.requestRegistration(RegistrationActivity.this,
+                e_mail.getText().toString(), password.getText().toString());
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Properties props = new Properties();
-
-        try {
-            props.load(new StringReader(answer.substring(1, answer.length() - 1).replace(", ", "\n")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Map<String, String> parsedJSON = new HashMap<String, String>();
-
-        for (Map.Entry<Object, Object> e : props.entrySet()) {
-            parsedJSON.put((String)e.getKey(), (String)e.getValue());
-        }
-
-        if(parsedJSON.get("status").equals("true")){
+        if(response.get("status").equals("true")){
 
             //Храним в настройках приложения новые данные
             SharedPreferences.Editor ed = MainActivity.sPref.edit();
