@@ -12,20 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class RegistationActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CONNECTION_TIMEOUT = 5000;
     EditText e_mail, password, repeat_password;
     Button log_in, registration;
@@ -50,7 +43,7 @@ public class RegistationActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.log_in_btn:
-                Intent intent = new Intent(RegistationActivity.this, Log_inActivity.class);
+                Intent intent = new Intent(RegistrationActivity.this, Log_inActivity.class);
                 startActivity(intent);
                 break;
             case R.id.registration:
@@ -103,7 +96,7 @@ public class RegistationActivity extends AppCompatActivity implements View.OnCli
             ed.putString("e_mail", e_mail.getText().toString());
             ed.commit();
 
-            Intent intent = new Intent(RegistationActivity.this, SecondActivity.class);
+            Intent intent = new Intent(RegistrationActivity.this, SecondActivity.class);
             startActivity(intent);
         }else{
             System.out.println("registration failed");

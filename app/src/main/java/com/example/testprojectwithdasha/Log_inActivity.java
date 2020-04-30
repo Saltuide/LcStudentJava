@@ -12,15 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -55,7 +48,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.registration_btn:
                 System.out.println("scjdsd");
-                Intent intent = new Intent(Log_inActivity.this, RegistationActivity.class);
+                Intent intent = new Intent(Log_inActivity.this, RegistrationActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -72,7 +65,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
 
         String answer = new String();
         try {
-            answer = MainActivity.postRequest(e_mail.getText().toString(), password.getText().toString());
+            answer = MainActivity.postRequest(e_mail.getText().toString(), password.getText().toString(), "sign_in");
             answer = answer.replace("\"", "");
             System.out.println(answer);
             //{"status": true, "is_authorized": false, "id": "dasha@ya.ru"}

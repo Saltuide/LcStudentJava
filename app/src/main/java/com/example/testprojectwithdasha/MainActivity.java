@@ -40,8 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public static String postRequest(String login, String password) throws Exception {
-        final URL url = new URL("http://10.0.2.2:8000/sign_in/");
+    public static String postRequest(String login, String password, String request) throws Exception {
+        String req = "http://10.0.2.2:8000/" + request + "/";
+        final URL url = new URL(req);
         final HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
