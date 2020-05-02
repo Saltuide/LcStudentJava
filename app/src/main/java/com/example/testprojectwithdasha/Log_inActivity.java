@@ -79,7 +79,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
             ed.putString("e_mail", e_mail.getText().toString());
             ed.commit();
 
-            Intent intent = new Intent(Log_inActivity.this, SecondActivity.class);
+            Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);
             startActivity(intent);
         }else{
             System.out.println("YOU ARE NOT ALLOWED TO CUM");
