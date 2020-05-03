@@ -4,4 +4,6 @@
     <string name="reg_link">http://10.0.2.2:8000/registration/</string>
     <string name="post_request">POST</string>
     <string name="get_request">GET</string>
+    <string name="reset_password_link">http://10.0.2.2:8000/actions_with_password/reset/</string>
+    <string name="change_password_link">http://10.0.2.2:8000/actions_with_password/change/</string>
 </resources>

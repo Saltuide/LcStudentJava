@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -23,8 +24,8 @@ import java.util.Properties;
 public class Log_inActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    Button log_in, registartion;
-    EditText e_mail, password;
+    Button btnLogin, btnRegistration, btnForgetPass;
+    EditText etEmail, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +33,14 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_log_in);
 
 
-        log_in = (Button) findViewById(R.id.log_in);
-        log_in.setOnClickListener(this);
-        registartion = (Button) findViewById(R.id.registration_btn);
-        registartion.setOnClickListener(this);
-        e_mail = (EditText) findViewById(R.id.e_mail_in);
-        password = (EditText) findViewById(R.id.password_in);
+        btnLogin = (Button) findViewById(R.id.log_in);
+        btnLogin.setOnClickListener(this);
+        btnRegistration = (Button) findViewById(R.id.registration_btn);
+        btnRegistration.setOnClickListener(this);
+        etEmail = (EditText) findViewById(R.id.e_mail_in);
+        etPassword = (EditText) findViewById(R.id.password_in);
+        btnForgetPass = (Button) findViewById(R.id.btnForgetPass);
+        btnForgetPass.setOnClickListener(this);
 
     }
 
@@ -57,6 +60,10 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
                 Intent intent = new Intent(Log_inActivity.this, RegistrationActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.btnForgetPass:
+                Intent intent1 = new Intent(Log_inActivity.this, PasswordReset.class);
+                intent1.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(intent1);
             default:
                 break;
         }
@@ -69,20 +76,20 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
             StrictMode.setThreadPolicy(policy);
         }
         Map<String, String> response = RequestSender.requestLogin(Log_inActivity.this,
-                e_mail.getText().toString(), password.getText().toString());
+                etEmail.getText().toString(), etPassword.getText().toString());
 
         if(response.get("status").equals("true")){
-
             //Храним в настройках приложения новые данные
             SharedPreferences.Editor ed = MainActivity.sPref.edit();
             ed.putBoolean("State_of_the_input ", true);
-            ed.putString("e_mail", e_mail.getText().toString());
+            ed.putString("e_mail", etEmail.getText().toString());
             ed.commit();
 
             Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);
             startActivity(intent);
         }else{
-            System.out.println("YOU ARE NOT ALLOWED TO CUM");
+            Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);
+            toast.show();
         }
 
     }

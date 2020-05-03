@@ -84,7 +84,33 @@ public class RequestSender {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static Map<String, String> sRequestResetPassword(Activity context, String email) throws Exception{
+        JSONObject body = new JSONObject();
+        body.put("email", email);
 
+        String stringBody = body.toString();
+        String loginLink =  context.getResources().getString(R.string.reset_password_link);
+        String postRequest = context.getResources().getString(R.string.post_request);
+        //посылаем запрос на сервер и получаем ответ в response
+        String response = requestSender(loginLink, stringBody, postRequest);
+        //преобработка ответа (убираем крайние кавычки)
+        response = response.replace("\"", "");
+
+        Properties props = new Properties();
+        try {
+            props.load(new StringReader(response.substring(1, response.length() - 1).replace(
+                    ", ", "\n")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Map<String, String> parsedJSON = new HashMap<String, String>();
+        //собираем JSON
+        for (Map.Entry<Object, Object> e : props.entrySet()) {
+            parsedJSON.put((String)e.getKey(), (String)e.getValue());
+        }
+        return parsedJSON;
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     //
     public static String requestSender(String link, String body, String requestType) throws Exception{
