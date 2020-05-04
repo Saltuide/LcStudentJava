@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Boolean State_of_the_input  = sPref.getBoolean("State_of_the_input ", false);
 
             if (State_of_the_input) {
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(MainActivity.this, Log_inActivity.class);

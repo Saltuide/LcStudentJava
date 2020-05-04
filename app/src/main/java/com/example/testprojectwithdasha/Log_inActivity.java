@@ -83,6 +83,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
             SharedPreferences.Editor ed = MainActivity.sPref.edit();
             ed.putBoolean("State_of_the_input ", true);
             ed.putString("e_mail", etEmail.getText().toString());
+            ed.putString("1c_id", response.get("id_1C"));
             ed.commit();
 
             Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);

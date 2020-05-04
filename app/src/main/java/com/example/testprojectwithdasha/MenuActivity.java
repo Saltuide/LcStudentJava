@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button news_btn, back_btn;
+    Button news_btn, back_btn, verification_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         news_btn.setOnClickListener((View.OnClickListener) this);
         back_btn = (Button) findViewById(R.id.back_btn);
         back_btn.setOnClickListener((View.OnClickListener) this);
+        verification_btn = (Button) findViewById(R.id.verification_btn);
+        verification_btn.setOnClickListener((View.OnClickListener) this);
+
+        String id_1c  = MainActivity.sPref.getString("1c_id", "");
+
+        if (id_1c != "") {
+            verification_btn.setVisibility(View.INVISIBLE);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

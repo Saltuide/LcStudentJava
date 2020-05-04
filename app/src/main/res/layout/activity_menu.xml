@@ -27,4 +27,15 @@
         app:layout_constraintBottom_toBottomOf="@+id/news_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/news_btn" />
+
+    <Button
+        android:id="@+id/verification_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="56dp"
+        android:text="Верификация"
+        app:layout_constraintBottom_toTopOf="@+id/news_btn"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
