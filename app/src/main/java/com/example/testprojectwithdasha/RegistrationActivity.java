@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -54,7 +55,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         e.printStackTrace();
                     }
                 } else {
-                    System.out.println("passwords don't match");
+                    Toast toast = Toast.makeText(this, "Пароли не совпадают",Toast.LENGTH_LONG);
+                    toast.show();
                 }
                 break;
             default:
@@ -83,7 +85,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             Intent intent = new Intent(RegistrationActivity.this, SecondActivity.class);
             startActivity(intent);
         }else{
-            System.out.println("registration failed");
+            Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 }

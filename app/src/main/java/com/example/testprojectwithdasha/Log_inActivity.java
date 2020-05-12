@@ -56,7 +56,6 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.registration_btn:
-                System.out.println("scjdsd");
                 Intent intent = new Intent(Log_inActivity.this, RegistrationActivity.class);
                 startActivity(intent);
                 break;
@@ -81,9 +80,12 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
         if(response.get("status").equals("true")){
             //Храним в настройках приложения новые данные
             SharedPreferences.Editor ed = MainActivity.sPref.edit();
-            ed.putBoolean("State_of_the_input ", true);
+            ed.putBoolean("status", true);
             ed.putString("e_mail", etEmail.getText().toString());
-            ed.putString("1c_id", response.get("id_1C"));
+            ed.putBoolean("is_verificated", Boolean.parseBoolean(response.get("is_verificated")));
+            ed.putString("last_name", response.get("last_name"));
+            ed.putString("first_name", response.get("first_name"));
+            ed.putString("middle_name", response.get("middle_name") );
             ed.commit();
 
             Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);

@@ -1,0 +1,7 @@
+Что храним в памяти устройства о пользователе 
+
+boolean "status"  //авторизован ли пользователь
+string "last_name"
+string "first_name"
+string "middle_name"
+boolean "is_verificated"

@@ -4,21 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity">
+    tools:context=".Setting">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <Button
-            android:id="@+id/btn"
-            android:layout_width="150dp"
-            android:layout_height="10dp"
-            android:text="sadasd" />
-
         <ListView
-            android:id="@+id/buttons"
+            android:id="@+id/setting_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/btn" >
@@ -26,4 +20,5 @@
         </ListView>
 
     </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
