@@ -27,24 +27,27 @@ public class Setting extends AppCompatActivity {
 
         setting_buttons.setAdapter(adapter);
 
-        setting_buttons.setAdapter(adapter);
-
         setting_buttons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                SharedPreferences.Editor ed = MainActivity.sPref.edit();
-                ed.putBoolean("status", false);
-                ed.putString("e_mail", "");
-                ed.putBoolean("is_verificated", false);
-                ed.putString("last_name", "");
-                ed.putString("first_name", "");
-                ed.putString("middle_name", "");
-                ed.commit();
+                if (position == 1) {
+                    SharedPreferences.Editor ed = MainActivity.sPref.edit();
+                    ed.putBoolean("status", false);
+                    ed.putString("e_mail", "");
+                    ed.putBoolean("is_verificated", false);
+                    ed.putString("last_name", "");
+                    ed.putString("first_name", "");
+                    ed.putString("middle_name", "");
+                    ed.putString("faculty_name", "");
+                    ed.putString("degree_program", "");
+                    ed.putString("group_name", "");
+                    ed.commit();
 
-                Intent intent = new Intent(Setting.this, Log_inActivity.class);
-                startActivity(intent);
-            }
+                    Intent intent = new Intent(Setting.this, Log_inActivity.class);
+                    startActivity(intent);
+                };
+            };
         });
     }
 

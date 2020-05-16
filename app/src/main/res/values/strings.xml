@@ -2,6 +2,7 @@
     <string name="app_name">TestProjectWithDasha</string>
     <string name="login_link">http://10.0.2.2:8000/sign_in/</string>
     <string name="reg_link">http://10.0.2.2:8000/registration/</string>
+    <string name="getGroupsByUser_link">http://10.0.2.2:8000/getGroupsByUser/</string>
     <string name="post_request">POST</string>
     <string name="get_request">GET</string>
     <string name="reset_password_link">http://10.0.2.2:8000/actions_with_password/reset/</string>
@@ -14,7 +15,6 @@
         <item>Новости</item>
         <item>Расписание</item>
         <item>Деканат</item>
-        <item>Личный кабинет</item>
         <item>Домашние задания</item>
         <item>Посещаемость</item>
         <item>Настройки</item>

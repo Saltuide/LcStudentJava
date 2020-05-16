@@ -42,9 +42,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         buttons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MenuActivity.this, Setting.class);
-                startActivity(intent);
-            }
+                if (MainActivity.sPref.getBoolean("is_verificated", false)) {
+                    if (position == 0) {
+                        Intent intent = new Intent(MenuActivity.this, PersonalAccount.class);
+                        startActivity(intent);
+                    } else if (position == 7) {
+                        Intent intent = new Intent(MenuActivity.this, Setting.class);
+                        startActivity(intent);
+                    };
+                };
+            };
         });
     }
 

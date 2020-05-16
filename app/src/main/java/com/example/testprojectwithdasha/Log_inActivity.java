@@ -83,10 +83,16 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
             ed.putBoolean("status", true);
             ed.putString("e_mail", etEmail.getText().toString());
             ed.putBoolean("is_verificated", Boolean.parseBoolean(response.get("is_verificated")));
+            System.out.println(response.get("last_name"));
             ed.putString("last_name", response.get("last_name"));
             ed.putString("first_name", response.get("first_name"));
             ed.putString("middle_name", response.get("middle_name") );
             ed.commit();
+
+            if (MainActivity.sPref.getBoolean("is_verificated", false)) {
+                RequestSender.getGroupsByUser(Log_inActivity.this, etEmail.getText().toString());
+            }
+
 
             Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);
             startActivity(intent);

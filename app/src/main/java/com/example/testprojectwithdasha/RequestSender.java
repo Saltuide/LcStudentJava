@@ -2,10 +2,12 @@ package com.example.testprojectwithdasha;
 
 import android.app.Activity;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -139,5 +141,31 @@ public class RequestSender {
             }
             return response.toString();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void getGroupsByUser (Activity context, String email) throws Exception{
+        SharedPreferences.Editor ed = MainActivity.sPref.edit();
+        JSONObject body = new JSONObject();
+        body.put("email", email);
+
+        String stringBody = body.toString();
+        String loginLink =  context.getResources().getString(R.string.getGroupsByUser_link);
+        String postRequest = context.getResources().getString(R.string.post_request);
+        //посылаем запрос на сервер и получаем ответ в response
+        String response = requestSender(loginLink, stringBody, postRequest);
+
+        JSONObject objJson = new JSONObject(response);
+
+        if (objJson.getBoolean("status")) {
+            JSONArray featuresArr = objJson.getJSONArray("answer");
+
+            ed.putString("group_name", featuresArr.getJSONObject(0).getString("group_name"));
+            ed.putString("degree_program", featuresArr.getJSONObject(0).getString("degree_program"));
+            ed.putString("faculty_name", featuresArr.getJSONObject(0).getString("group_name"));
+            ed.commit();
+        }
+
+
     }
 }
