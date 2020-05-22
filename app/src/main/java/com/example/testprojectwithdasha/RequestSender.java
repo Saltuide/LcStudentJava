@@ -145,6 +145,7 @@ public class RequestSender {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void getGroupsByUser (Activity context, String email) throws Exception{
+        //email ="admin";
         SharedPreferences.Editor ed = MainActivity.sPref.edit();
         JSONObject body = new JSONObject();
         body.put("email", email);
@@ -157,15 +158,15 @@ public class RequestSender {
 
         JSONObject objJson = new JSONObject(response);
 
-        if (objJson.getBoolean("status")) {
-            JSONArray featuresArr = objJson.getJSONArray("answer");
+        //if (objJson.getBoolean("status")) {
+        JSONArray featuresArr = objJson.getJSONArray("answer");
+        ed.putInt("group_count", featuresArr.length());
 
-            ed.putString("group_name", featuresArr.getJSONObject(0).getString("group_name"));
-            ed.putString("degree_program", featuresArr.getJSONObject(0).getString("degree_program"));
-            ed.putString("faculty_name", featuresArr.getJSONObject(0).getString("group_name"));
+        for (int i = 0; i < featuresArr.length(); i++) {
+            ed.putString("group_name" + Integer.toString(i), featuresArr.getJSONObject(i).getString("group_name"));
+            ed.putString("degree_program"+ Integer.toString(i), featuresArr.getJSONObject(i).getString("degree_program"));
+            ed.putString("faculty_name"+ Integer.toString(i), featuresArr.getJSONObject(i).getString("faculty_name"));
             ed.commit();
         }
-
-
     }
 }

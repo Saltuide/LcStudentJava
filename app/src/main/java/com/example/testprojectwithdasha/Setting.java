@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 public class Setting extends AppCompatActivity {
 
     ArrayAdapter<CharSequence> adapter;
@@ -43,6 +45,8 @@ public class Setting extends AppCompatActivity {
                     ed.putString("degree_program", "");
                     ed.putString("group_name", "");
                     ed.commit();
+
+                    Log_inActivity.my_arr = new ArrayList<>();
 
                     Intent intent = new Intent(Setting.this, Log_inActivity.class);
                     startActivity(intent);

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PersonalAccount">
-
+    tools:context=".GroupsActivity">
 
     <LinearLayout
         android:id="@+id/container"
@@ -14,17 +13,9 @@
         android:layout_height="match_parent">
 
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/groups_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-        </ListView>
-
-        <ListView
-            android:id="@+id/listViewGroups"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/listView">
 
         </ListView>
 

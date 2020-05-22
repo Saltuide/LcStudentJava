@@ -13,8 +13,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -26,6 +29,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
 
     Button btnLogin, btnRegistration, btnForgetPass;
     EditText etEmail, etPassword;
+    public static ArrayList<ArrayList<HashMap<String, String>>> my_arr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +91,10 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
             ed.putString("last_name", response.get("last_name"));
             ed.putString("first_name", response.get("first_name"));
             ed.putString("middle_name", response.get("middle_name") );
+
             ed.commit();
 
-            if (MainActivity.sPref.getBoolean("is_verificated", false)) {
-                RequestSender.getGroupsByUser(Log_inActivity.this, etEmail.getText().toString());
-            }
-
+            RequestSender.getGroupsByUser(Log_inActivity.this, MainActivity.sPref.getString("e_mail", ""));
 
             Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);
             startActivity(intent);
