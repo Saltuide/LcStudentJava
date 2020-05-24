@@ -51,5 +51,9 @@
     <string name="fix_the_pass">Восстановить пароль</string>
     <string name="exit">Выход</string>
     <string name="verificated">Поздравляем с успешной верификации. Теперь вам доступны все функции приложения</string>
+    <string name="tag">Tag</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="pubdate">pubDate</string>
 
 </resources>
