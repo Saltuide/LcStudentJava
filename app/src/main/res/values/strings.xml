@@ -31,4 +31,25 @@
         <item>Сменить пароль</item>
         <item>Выход</item>
     </string-array>
+
+    <string name="about_app">О ПРИЛОЖЕНИИ</string>
+    <string name="logo_description">Лого нашей когманды</string>
+    <string name="our_text_about_app">Тут будет текст, который мы придумаем и напишем и он будет
+        красиво оформлен по середине, потому что мы можем себе такое позволить</string>
+    <string name="forgot_password">Забыли пароль ?</string>
+    <string name="authorization">Авторизация</string>
+    <string name="show_password">Покзаать пароль</string>
+    <string name="password">Пароль</string>
+    <string name="email">Почта</string>
+    <string name="registration">Регистрация</string>
+    <string name="repeat_pass">Повторите пароль</string>
+    <string name="login">Войти</string>
+    <string name="first_registration">Зарегистрироваться</string>
+    <string name="next_or_menu">Далее/вернутся в меню</string>
+    <string name="go_back">Назад</string>
+    <string name="input_email">Введите почту для восстановления пароля</string>
+    <string name="fix_the_pass">Восстановить пароль</string>
+    <string name="exit">Выход</string>
+    <string name="verificated">Поздравляем с успешной верификации. Теперь вам доступны все функции приложения</string>
+
 </resources>
