@@ -2,39 +2,59 @@ package com.example.testprojectwithdasha;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public class NewsActivity extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
+import java.util.List;
 
-    Button back_btn;
 
+public class NewsActivity extends AppCompatActivity{
+
+    List<News> news = new ArrayList<>();
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        back_btn = (Button) findViewById(R.id.back_btn);
-        back_btn.setOnClickListener((View.OnClickListener) this);
+        try {
+            setData();
+        } catch (Exception e) {
+            Toast toast = Toast.makeText(this, "shit negro",Toast.LENGTH_LONG);
+            toast.show();
+        }
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
 
+        NewsAdapter adapter = new NewsAdapter(this, news);
+
+        recyclerView.setAdapter(adapter);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.back_btn:
-                Intent intent = new Intent(NewsActivity.this, MenuActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
+    private void setData() throws Exception {
+        String title, tag, pubDate, description;
+        String tmp = RequestSender.getNews(NewsActivity.this, "default",
+                "all","all","all", 1);
+        ;
+        JSONObject answer = new JSONObject(tmp);
+        System.out.println(answer.getString("status"));
+        if(answer.getString("status") == "false") return;
+        JSONObject body = answer.getJSONObject("news_array");
+        for(int i = 0; i < body.names().length(); i++){
+            String key = body.names().getString(i);
+            JSONObject item = body.getJSONObject(key);
+            title = item.getString("news_title");
+            tag = item.getString("news_tag");
+            pubDate = item.getString("news_pub_date");
+            description = item.getString("news_short_text");
+            news.add(new News(title, tag, pubDate, description));
         }
     }
 }

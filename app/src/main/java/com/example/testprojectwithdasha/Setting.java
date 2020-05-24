@@ -33,6 +33,7 @@ public class Setting extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                //Кнопка выхода
                 if (position == 1) {
                     SharedPreferences.Editor ed = MainActivity.sPref.edit();
                     ed.putBoolean("status", false);
@@ -49,6 +50,8 @@ public class Setting extends AppCompatActivity {
                     Log_inActivity.my_arr = new ArrayList<>();
 
                     Intent intent = new Intent(Setting.this, Log_inActivity.class);
+                    // Чистим вилкой кэш активити
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 };
             };
