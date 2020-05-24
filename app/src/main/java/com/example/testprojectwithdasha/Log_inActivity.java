@@ -98,6 +98,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
 
             Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);
             startActivity(intent);
+            Log_inActivity.this.finish();
         }else{
             Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);
             toast.show();

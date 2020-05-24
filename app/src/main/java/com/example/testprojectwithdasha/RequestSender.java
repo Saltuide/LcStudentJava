@@ -26,6 +26,35 @@ public class RequestSender {
     private static final int CONNECTION_TIMEOUT = 5000;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String requestSender(String link, String body, String requestType) throws Exception{
+        final URL url = new URL(link);
+        final HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod(requestType);
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
+        con.setDoInput(true);
+        con.setConnectTimeout(CONNECTION_TIMEOUT);
+        con.setReadTimeout(CONNECTION_TIMEOUT);
+
+        //Cериализация
+        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+            wr.writeBytes(body);
+            wr.flush();
+        }
+        try (BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()))) {
+
+            String line;
+            StringBuilder response = new StringBuilder();
+            //Считываем ответ и записываем в строку response
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+            return response.toString();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static Map<String, String> requestLogin(Activity context, String login, String password) throws Exception{
         JSONObject body = new JSONObject();
         body.put("email", login);
@@ -53,7 +82,6 @@ public class RequestSender {
         }
         return parsedJSON;
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static Map<String, String> requestRegistration(Activity context, String login, String password) throws Exception {
@@ -85,7 +113,6 @@ public class RequestSender {
         return parsedJSON;
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static Map<String, String> sRequestResetPassword(Activity context, String email) throws Exception{
         JSONObject body = new JSONObject();
@@ -113,35 +140,6 @@ public class RequestSender {
         }
         return parsedJSON;
     }
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    //
-    public static String requestSender(String link, String body, String requestType) throws Exception{
-        final URL url = new URL(link);
-        final HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod(requestType);
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setDoOutput(true);
-        con.setDoInput(true);
-        con.setConnectTimeout(CONNECTION_TIMEOUT);
-        con.setReadTimeout(CONNECTION_TIMEOUT);
-        //Cериализация
-        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.writeBytes(body);
-            wr.flush();
-        }
-
-        try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()))) {
-
-            String line;
-            StringBuilder response = new StringBuilder();
-            //Считываем ответ и записываем в строку response
-            while ((line = in.readLine()) != null) {
-                response.append(line);
-            }
-            return response.toString();
-        }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public static void getGroupsByUser (Activity context, String email) throws Exception{
@@ -168,5 +166,24 @@ public class RequestSender {
             ed.putString("faculty_name"+ Integer.toString(i), featuresArr.getJSONObject(i).getString("faculty_name"));
             ed.commit();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static String getNews(Activity context, String type, String year, String month, String tag, int page) throws Exception{
+        JSONObject jsonObject = new JSONObject();
+        if(type == "default") jsonObject.put("type", type);
+        else{
+            jsonObject.put("type", type);
+            jsonObject.put("year", year);
+            jsonObject.put("month", month);
+            jsonObject.put("tag", tag);
+            jsonObject.put("current_page", page);
+        }
+        String stringBody = jsonObject.toString();
+        String newsLink =  context.getResources().getString(R.string.get_news);
+        String postRequest = context.getResources().getString(R.string.post_request);
+
+        String ans = requestSender(newsLink, stringBody, postRequest);
+        return ans;
     }
 }

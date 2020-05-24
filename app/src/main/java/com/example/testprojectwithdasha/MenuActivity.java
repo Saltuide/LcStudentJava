@@ -45,9 +45,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 if (MainActivity.sPref.getBoolean("is_verificated", false)) {
                     if (position == 0) {
                         Intent intent = new Intent(MenuActivity.this, PersonalAccount.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                    } else if (position == 7) {
+                    }else if (position == 2){
+                        Intent intent = new Intent(MenuActivity.this, NewsActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }else if (position == 7) {
                         Intent intent = new Intent(MenuActivity.this, Setting.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     };
                 };
