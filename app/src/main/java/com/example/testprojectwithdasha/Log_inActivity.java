@@ -8,8 +8,11 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,9 +30,10 @@ import java.util.Properties;
 public class Log_inActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+    public static ArrayList<Object> my_arr;
     Button btnLogin, btnRegistration, btnForgetPass;
     EditText etEmail, etPassword;
-    public static ArrayList<ArrayList<HashMap<String, String>>> my_arr = new ArrayList<>();
+    CheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,19 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
         btnForgetPass = (Button) findViewById(R.id.btnForgetPass);
         btnForgetPass.setOnClickListener(this);
 
+        checkBox = (CheckBox) findViewById(R.id.checkpass);
+
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (!isChecked) {
+                    etPassword.setTransformationMethod(new PasswordTransformationMethod());
+                } else {
+                    etPassword.setTransformationMethod(null);
+                }
+                etPassword.setSelection(etPassword.length());
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
