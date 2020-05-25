@@ -28,7 +28,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
             ed.putString("e_mail", "");
             ed.commit();
 
-            Intent intent = new Intent(SecondActivity.this, Log_inActivity.class);
+            Intent intent = new Intent(SecondActivity.this, LoginActivity.class);
             startActivity(intent);
         }
     }

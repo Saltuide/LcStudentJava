@@ -8,12 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class Setting extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     ArrayAdapter<CharSequence> adapter;
     private ListView setting_buttons;
@@ -47,9 +46,9 @@ public class Setting extends AppCompatActivity {
                     ed.putString("group_name", "");
                     ed.commit();
 
-                    Log_inActivity.my_arr = new ArrayList<>();
+                    LoginActivity.my_arr = new ArrayList<>();
 
-                    Intent intent = new Intent(Setting.this, Log_inActivity.class);
+                    Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                     // Чистим вилкой кэш активити
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

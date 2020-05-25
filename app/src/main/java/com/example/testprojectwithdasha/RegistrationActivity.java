@@ -13,11 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CONNECTION_TIMEOUT = 5000;
@@ -44,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.log_in_btn:
-                Intent intent = new Intent(RegistrationActivity.this, Log_inActivity.class);
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                 startActivity(intent);
                 break;
             case R.id.registration:

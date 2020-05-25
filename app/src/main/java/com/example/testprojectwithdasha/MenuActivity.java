@@ -1,10 +1,8 @@
 package com.example.testprojectwithdasha;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -46,7 +43,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (MainActivity.sPref.getBoolean("is_verificated", false)) {
                     if (position == 0) {
-                        Intent intent = new Intent(MenuActivity.this, PersonalAccount.class);
+                        Intent intent = new Intent(MenuActivity.this, PersonalAccountActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }else if (position == 2){
@@ -54,7 +51,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     }else if (position == 7) {
-                        Intent intent = new Intent(MenuActivity.this, Setting.class);
+                        Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     };

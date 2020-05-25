@@ -6,27 +6,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-public class PersonalAccount<CustomerDataSource> extends AppCompatActivity {
+public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivity {
 
     private CustomerDataSource datasource;
     private long mStartTime = 0L;
@@ -80,7 +71,7 @@ public class PersonalAccount<CustomerDataSource> extends AppCompatActivity {
             map.put("Value", MainActivity.sPref.getString("group_name" + "0", ""));
             groupArrayList.add(map);
 
-            SimpleAdapter adapter_group = new SimpleAdapter(PersonalAccount.this, groupArrayList, android.R.layout.simple_list_item_2,
+            SimpleAdapter adapter_group = new SimpleAdapter(PersonalAccountActivity.this, groupArrayList, android.R.layout.simple_list_item_2,
                     new String[]{"Name", "Value"},
                     new int[]{android.R.id.text1, android.R.id.text2});
 
@@ -102,7 +93,7 @@ public class PersonalAccount<CustomerDataSource> extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 if (MainActivity.sPref.getInt("group_count",0) == 1) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(PersonalAccount.this);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(PersonalAccountActivity.this);
                     String message = MainActivity.sPref.getString("faculty_name" + Integer.toString(position), "") +
                             "\n" + MainActivity.sPref.getString("degree_program" + Integer.toString(position), "");
                     builder1.setMessage(message);
@@ -119,7 +110,7 @@ public class PersonalAccount<CustomerDataSource> extends AppCompatActivity {
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                 } else {
-                    Intent intent = new Intent(PersonalAccount.this, GroupsActivity.class);
+                    Intent intent = new Intent(PersonalAccountActivity.this, GroupsActivity.class);
                     startActivity(intent);
                 };
             };
@@ -131,7 +122,6 @@ public class PersonalAccount<CustomerDataSource> extends AppCompatActivity {
             count += 1;
             int group_num = count % MainActivity.sPref.getInt("group_count", 0);
 
-            System.out.println("Защел");
             ListView listViewGroups = (ListView) findViewById(R.id.listViewGroups);
             ArrayList<HashMap<String, String>> groupArrayList = new ArrayList<>();
             HashMap<String, String> map;
@@ -141,7 +131,7 @@ public class PersonalAccount<CustomerDataSource> extends AppCompatActivity {
             map.put("Value", MainActivity.sPref.getString("group_name" + Integer.toString(group_num), ""));
             groupArrayList.add(map);
 
-            SimpleAdapter adapter_group = new SimpleAdapter(PersonalAccount.this, groupArrayList, android.R.layout.simple_list_item_2,
+            SimpleAdapter adapter_group = new SimpleAdapter(PersonalAccountActivity.this, groupArrayList, android.R.layout.simple_list_item_2,
                     new String[]{"Name", "Value"},
                     new int[]{android.R.id.text1, android.R.id.text2});
 

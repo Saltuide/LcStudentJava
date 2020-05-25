@@ -16,18 +16,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 
-
-public class Log_inActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     public static ArrayList<Object> my_arr;
@@ -77,11 +70,11 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.registration_btn:
-                Intent intent = new Intent(Log_inActivity.this, RegistrationActivity.class);
+                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btnForgetPass:
-                Intent intent1 = new Intent(Log_inActivity.this, PasswordReset.class);
+                Intent intent1 = new Intent(LoginActivity.this, PasswordResetActivity.class);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent1);
             default:
@@ -95,7 +88,7 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        Map<String, String> response = RequestSender.requestLogin(Log_inActivity.this,
+        Map<String, String> response = RequestSender.requestLogin(LoginActivity.this,
                 etEmail.getText().toString(), etPassword.getText().toString());
 
         if(response.get("status").equals("true")){
@@ -111,11 +104,11 @@ public class Log_inActivity extends AppCompatActivity implements View.OnClickLis
 
             ed.commit();
 
-            RequestSender.getGroupsByUser(Log_inActivity.this, MainActivity.sPref.getString("e_mail", ""));
+            RequestSender.getGroupsByUser(LoginActivity.this, MainActivity.sPref.getString("e_mail", ""));
 
-            Intent intent = new Intent(Log_inActivity.this, MenuActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
             startActivity(intent);
-            Log_inActivity.this.finish();
+            LoginActivity.this.finish();
         }else{
             Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);
             toast.show();

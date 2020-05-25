@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.Map;
 
-public class PasswordReset extends AppCompatActivity implements View.OnClickListener{
+public class PasswordResetActivity extends AppCompatActivity implements View.OnClickListener{
     TextView tvInfoText, tvResetEmail;
     Button btnResetPass, btnBackToLogin;
 
@@ -36,7 +34,7 @@ public class PasswordReset extends AppCompatActivity implements View.OnClickList
         String email = tvResetEmail.getText().toString();
         System.out.println(email);
         try {
-            Map<String, String> response = RequestSender.sRequestResetPassword(PasswordReset.this, email);
+            Map<String, String> response = RequestSender.sRequestResetPassword(PasswordResetActivity.this, email);
             System.out.println(response.get("status"));
             if(response.get("status").equals("true")){
                 tvInfoText.setText("На вашу почту отправлено письмо с ссылкой для восстановления" +
@@ -58,8 +56,9 @@ public class PasswordReset extends AppCompatActivity implements View.OnClickList
                 resetPassword();
                 break;
             case R.id.btnBackToLogin:
-                Intent intent = new Intent(PasswordReset.this, Log_inActivity.class);
+                Intent intent = new Intent(PasswordResetActivity.this, LoginActivity.class);
                 startActivity(intent);
+                PasswordResetActivity.this.finish();
                 break;
             default:
                 break;
