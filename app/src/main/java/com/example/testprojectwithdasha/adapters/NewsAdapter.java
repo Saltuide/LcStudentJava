@@ -1,4 +1,4 @@
-package com.example.testprojectwithdasha;
+package com.example.testprojectwithdasha.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testprojectwithdasha.R;
+import com.example.testprojectwithdasha.classes.News;
+
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
@@ -15,7 +18,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private LayoutInflater inflater;
     private List<News> news;
 
-    NewsAdapter(Context context, List<News> news){
+    public NewsAdapter(Context context, List<News> news){
         this.news = news;
         this.inflater = LayoutInflater.from(context);
     }

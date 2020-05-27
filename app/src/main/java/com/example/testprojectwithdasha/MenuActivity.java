@@ -12,10 +12,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.testprojectwithdasha.adapters.MenuAdapter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button news_btn, back_btn, verification_btn;
-    ArrayAdapter<CharSequence> adapter;
+    MenuAdapter adapter;
     private ListView buttons;
 
     @Override
@@ -28,12 +33,13 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         final Button btn = (Button)findViewById(R.id.btn);
 
         if (MainActivity.sPref.getBoolean("is_verificated", false)) {
-            adapter = ArrayAdapter.createFromResource(this, R.array.menu_button_verificated,
-                    android.R.layout.simple_list_item_1);
+            ArrayList<String> att = new ArrayList<>();
+            att.addAll(Arrays.asList(getResources().getStringArray(R.array.menu_button_verificated)));
+            adapter = new MenuAdapter(this, att);
         } else {
-
-            adapter = ArrayAdapter.createFromResource(this, R.array.menu_button,
-                    android.R.layout.simple_list_item_1);
+            ArrayList<String> att = new ArrayList<>();
+            att.addAll(Arrays.asList(getResources().getStringArray(R.array.menu_button)));
+            adapter = new MenuAdapter(this, att);
         }
 
         buttons.setAdapter(adapter);

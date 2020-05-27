@@ -9,6 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.testprojectwithdasha.adapters.NewsAdapter;
+import com.example.testprojectwithdasha.classes.News;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
