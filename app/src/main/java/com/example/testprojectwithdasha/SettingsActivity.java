@@ -10,11 +10,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.testprojectwithdasha.adapters.MenuAdapter;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    ArrayAdapter<CharSequence> adapter;
+    MenuAdapter adapter;
     private ListView setting_buttons;
 
     @Override
@@ -22,9 +25,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        ArrayList<String> att = new ArrayList<>();
+        att.addAll(Arrays.asList(getResources().getStringArray(R.array.settings_menu)));
+
         setting_buttons = (ListView)findViewById(R.id.setting_buttons);
-        adapter = ArrayAdapter.createFromResource(this, R.array.settings_menu,
-                android.R.layout.simple_list_item_1);
+        adapter = new MenuAdapter(this, att);
 
         setting_buttons.setAdapter(adapter);
 
