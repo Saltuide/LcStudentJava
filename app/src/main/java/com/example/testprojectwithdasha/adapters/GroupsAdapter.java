@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.testprojectwithdasha.R;
@@ -12,11 +13,11 @@ import com.example.testprojectwithdasha.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PersonalAccountAdapter extends BaseAdapter {
-    ArrayList<HashMap<String, String>> my_array;
+public class GroupsAdapter extends BaseAdapter {
+    ArrayList<ArrayList<HashMap<String, String>>> my_array;
     private LayoutInflater layoutInflater;
 
-    public PersonalAccountAdapter(Context context, ArrayList<HashMap<String, String>> my_array) {
+    public GroupsAdapter(Context context, ArrayList<ArrayList<HashMap<String, String>>> my_array) {
         this.my_array = my_array;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -24,7 +25,7 @@ public class PersonalAccountAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return my_array.size();
+        return 1;
     }
 
     @Override
@@ -42,24 +43,26 @@ public class PersonalAccountAdapter extends BaseAdapter {
         View view = convertView;
 
         if (view == null) {
-            view = layoutInflater.inflate(R.layout.string_string_item, parent, false);
+            view = layoutInflater.inflate(R.layout.string_spinner_item, parent, false);
         }
 
 
         TextView text1 = (TextView)view.findViewById(R.id.name_text);
-        TextView text2 = (TextView)view.findViewById(R.id.value_text);
+        Spinner spinner = (Spinner)view.findViewById(R.id.value_text);
 
-        HashMap<String, String> map;
-        map = getStringString(position);
+        text1.setText("Группа");
 
-        //System.out.println(map.get(0));
-        text1.setText(map.get("Name"));
-        text2.setText(map.get("Value"));
+        ArrayList<String> arr = new ArrayList<>();
+
+        for (int i = 0; i < my_array.size(); i++) {
+            arr.add(my_array.get(i).get(0).get("Value"));
+        }
+
+        SpinnerAdapter adapter = new SpinnerAdapter(view.getContext(), arr);
+        spinner.setAdapter(adapter);
+
         return view;
-
+        
     }
 
-    private HashMap<String, String> getStringString(int position) {
-        return (HashMap<String, String>) getItem(position);
-    }
 }

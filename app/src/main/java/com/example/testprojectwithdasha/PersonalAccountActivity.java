@@ -13,9 +13,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
+import com.example.testprojectwithdasha.adapters.GroupsAdapter;
 import com.example.testprojectwithdasha.adapters.PersonalAccountAdapter;
 
 import java.util.ArrayList;
@@ -26,6 +29,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
     private CustomerDataSource datasource;
     private long mStartTime = 0L;
     private int count = 0;
+    String[] cities = {"Москва", "Самара", "Вологда", "Волгоград", "Саратов", "Воронеж"};
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -50,15 +55,16 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
             listViewGroups.setAdapter(adapter_group);
         } else if (MainActivity.sPref.getInt("group_count",0) > 1) {
-            PersonalAccountAdapter adapter_group = new PersonalAccountAdapter(this, groupArrayList.get(0));
+            GroupsAdapter adapter_group = new GroupsAdapter(this, groupArrayList);
             listViewGroups.setAdapter(adapter_group);
 
-            mHandler.postDelayed(mUpdateUITimerTask, 100 * 100);
+            //mHandler.postDelayed(mUpdateUITimerTask, 100 * 100);
         }
+
 
     }
 
-    private final Runnable mUpdateUITimerTask = new Runnable() {
+/*    private final Runnable mUpdateUITimerTask = new Runnable() {
         public void run() {
             count += 1;
             int group_num = count % MainActivity.sPref.getInt("group_count", 0);
@@ -75,6 +81,6 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
                 mHandler.postDelayed(mUpdateUITimerTask, 100 * 100);
             }
         }
-    };
+    };*/
     private final Handler mHandler = new Handler();
 }

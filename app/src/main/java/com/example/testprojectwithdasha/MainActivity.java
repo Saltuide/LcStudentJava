@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.testprojectwithdasha.adapters.MenuAdapter;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CONNECTION_TIMEOUT = 5000;
