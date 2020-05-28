@@ -29,6 +29,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
     private CustomerDataSource datasource;
     private long mStartTime = 0L;
     private int count = 0;
+    ListView listView;
+    public ListView listViewGroups;
     String[] cities = {"Москва", "Самара", "Вологда", "Волгоград", "Саратов", "Воронеж"};
 
 
@@ -38,8 +40,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_account);
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        ListView listViewGroups = (ListView) findViewById(R.id.listViewGroups);
+        listView = (ListView) findViewById(R.id.listView);
+        listViewGroups = (ListView) findViewById(R.id.listViewGroups);
         ArrayList<ArrayList<HashMap<String, String>>> groupArrayList = new ArrayList<>();
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
             listViewGroups.setAdapter(adapter_group);
         } else if (MainActivity.sPref.getInt("group_count",0) > 1) {
-            GroupsAdapter adapter_group = new GroupsAdapter(this, groupArrayList);
+            GroupsAdapter adapter_group = new GroupsAdapter(this, groupArrayList, 0);
             listViewGroups.setAdapter(adapter_group);
 
             //mHandler.postDelayed(mUpdateUITimerTask, 100 * 100);
