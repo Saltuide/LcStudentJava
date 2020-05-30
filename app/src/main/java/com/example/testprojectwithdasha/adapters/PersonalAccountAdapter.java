@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.testprojectwithdasha.R;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PersonalAccountAdapter extends BaseAdapter {
+
     ArrayList<HashMap<String, String>> my_array;
     private LayoutInflater layoutInflater;
 
@@ -21,10 +23,9 @@ public class PersonalAccountAdapter extends BaseAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-
     @Override
     public int getCount() {
-        return my_array.size();
+        return  my_array.size();
     }
 
     @Override
@@ -42,19 +43,20 @@ public class PersonalAccountAdapter extends BaseAdapter {
         View view = convertView;
 
         if (view == null) {
-            view = layoutInflater.inflate(R.layout.string_string_item, parent, false);
+            view = layoutInflater.inflate(R.layout.personal_account_item, parent, false);
         }
 
 
-        TextView text1 = (TextView)view.findViewById(R.id.name_text);
-        TextView text2 = (TextView)view.findViewById(R.id.value_text);
+        TextView text_name = (TextView)view.findViewById(R.id.name_txt);
+        TextView text_value = (TextView)view.findViewById(R.id.value_txt);
 
         HashMap<String, String> map;
         map = getStringString(position);
 
         //System.out.println(map.get(0));
-        text1.setText(map.get("Name"));
-        text2.setText(map.get("Value"));
+        text_name.setText(map.get("Name"));
+        text_value.setText(map.get("Value"));
+
         return view;
 
     }

@@ -43,7 +43,7 @@ public class SpinnerAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.spinner_item, parent, false);
         }
 
-        TextView text = (TextView)view.findViewById(R.id.spinner_items);
+        TextView text = (TextView)view.findViewById(R.id.spinner_txt);
 
 
         text.setText(getString(position));

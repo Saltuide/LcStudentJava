@@ -43,7 +43,7 @@ public class MenuAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.menu_item, parent, false);
         }
 
-        TextView text = (TextView)view.findViewById(R.id.menu_item_txt);
+        TextView text = (TextView)view.findViewById(R.id.menu_txt);
 
 
         //System.out.println(map.get(0));
