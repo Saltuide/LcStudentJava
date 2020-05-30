@@ -59,10 +59,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent = new Intent(MenuActivity.this, PersonalAccountActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                    }else if (position == 2){
-                        Intent intent = new Intent(MenuActivity.this, NewsActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
                     }else if (position == 5) {
                         Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

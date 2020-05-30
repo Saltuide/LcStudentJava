@@ -40,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //Кнопка выхода
-                if (position == 1) {
+                if (position == 2) {
                     SharedPreferences.Editor ed = MainActivity.sPref.edit();
                     ed.putBoolean("status", false);
                     ed.putString("e_mail", "");
@@ -58,6 +58,10 @@ public class SettingsActivity extends AppCompatActivity {
                     Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                     // Чистим вилкой кэш активити
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }else if (position == 1) {
+                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 };
             };
