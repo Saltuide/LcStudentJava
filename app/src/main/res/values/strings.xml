@@ -13,8 +13,6 @@
     <string-array name="menu_button_verificated">
         <item>Личный кабинет</item>
         <item>Объявления</item>
-        <item>Новости</item>
-        <item>Расписание</item>
         <item>Деканат</item>
         <item>Домашние задания</item>
         <item>Посещаемость</item>

@@ -17,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.view.MotionEvent;
+import android.widget.Button;
 
 import com.example.testprojectwithdasha.adapters.GroupsAdapter;
 import com.example.testprojectwithdasha.adapters.PersonalAccountAdapter;

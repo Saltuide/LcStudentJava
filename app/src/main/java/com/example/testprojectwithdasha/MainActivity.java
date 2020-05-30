@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //Получаем настройки приложения
             sPref = getPreferences(MODE_PRIVATE);
-            Boolean State_of_the_input  = sPref.getBoolean("status", false);
+            Boolean StateOfTheInput  = sPref.getBoolean("status", false);
 
-            if (State_of_the_input) {
+            if (StateOfTheInput) {
                 Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                 startActivity(intent);
             } else {
