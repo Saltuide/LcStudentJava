@@ -17,6 +17,7 @@ import android.widget.Button;
 
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
 import com.example.testprojectwithdasha.classes.News;
+import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -85,6 +86,20 @@ public class NewsActivity extends AppCompatActivity{
             NewsAdapter adapter = new NewsAdapter(NewsActivity.this, news);
 
             recyclerView.setAdapter(adapter);
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(NewsActivity.this, recyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            System.out.println(position);
+                        }
+
+                        @Override
+                        public void onLongItemClick(View view, int position) {
+                            System.out.println("Долгое нажатие");
+                        }
+                    })
+            );
 
             navigGoToRasp = (Button) findViewById(R.id.goto_rasp);
             navigGoToRasp.setOnTouchListener(new View.OnTouchListener() {
