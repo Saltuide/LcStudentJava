@@ -9,12 +9,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.view.MotionEvent;
+import android.annotation.SuppressLint;
+
+import com.example.testprojectwithdasha.adapters.MenuAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    ArrayAdapter<CharSequence> adapter;
+    MenuAdapter adapter;
     private ListView setting_buttons;
 
     @Override
@@ -22,9 +27,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        ArrayList<String> att = new ArrayList<>();
+        att.addAll(Arrays.asList(getResources().getStringArray(R.array.settings_menu)));
+
         setting_buttons = (ListView)findViewById(R.id.setting_buttons);
-        adapter = ArrayAdapter.createFromResource(this, R.array.settings_menu,
-                android.R.layout.simple_list_item_1);
+        adapter = new MenuAdapter(this, att);
 
         setting_buttons.setAdapter(adapter);
 
@@ -33,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 //Кнопка выхода
-                if (position == 1) {
+                if (position == 2) {
                     SharedPreferences.Editor ed = MainActivity.sPref.edit();
                     ed.putBoolean("status", false);
                     ed.putString("e_mail", "");
@@ -51,6 +58,10 @@ public class SettingsActivity extends AppCompatActivity {
                     Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
                     // Чистим вилкой кэш активити
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }else if (position == 1) {
+                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 };
             };

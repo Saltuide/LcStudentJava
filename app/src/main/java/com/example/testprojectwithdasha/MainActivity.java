@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.testprojectwithdasha.adapters.MenuAdapter;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CONNECTION_TIMEOUT = 5000;
@@ -48,9 +50,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             //Получаем настройки приложения
             sPref = getPreferences(MODE_PRIVATE);
-            Boolean State_of_the_input  = sPref.getBoolean("status", false);
+            Boolean StateOfTheInput  = sPref.getBoolean("status", false);
 
-            if (State_of_the_input) {
+            if (StateOfTheInput) {
                 Intent intent = new Intent(MainActivity.this, MenuActivity.class);
                 startActivity(intent);
             } else {

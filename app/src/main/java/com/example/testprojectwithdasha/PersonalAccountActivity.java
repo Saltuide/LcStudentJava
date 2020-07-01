@@ -3,6 +3,7 @@ package com.example.testprojectwithdasha;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.example.testprojectwithdasha.adapters.GroupsAdapter;
+import com.example.testprojectwithdasha.adapters.PersonalAccountAdapter;
+import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +27,8 @@ import java.util.HashMap;
 public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivity {
 
     private CustomerDataSource datasource;
-    private long mStartTime = 0L;
+    public static ArrayList<ArrayList<HashMap<String, String>>> groupArrayList = new ArrayList<>();
+    public static ListView listViewGroups;
     private int count = 0;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -30,94 +38,60 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         setContentView(R.layout.activity_personal_account);
 
         ListView listView = (ListView) findViewById(R.id.listView);
-        ListView listViewGroups = (ListView) findViewById(R.id.listViewGroups);
-        ArrayList<HashMap<String, String>> groupArrayList = new ArrayList<>();
+        listViewGroups = (ListView) findViewById(R.id.listViewGroups);
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
-        HashMap<String, String> map;
+        final TextView name_text = (TextView)findViewById(R.id.name_txt);
+        Spinner value_spinner = (Spinner)findViewById(R.id.value_spinner);
 
+        arrayList = Functions.getUserSettings();
+        groupArrayList = Functions.getUserGroups();
 
-        map = new HashMap<>();
-        map.put("Name", "Фамилия");
-        map.put("Value", MainActivity.sPref.getString("last_name", ""));
-        arrayList.add(map);
-
-        map = new HashMap<>();
-        map.put("Name", "Имя");
-        map.put("Value",MainActivity.sPref.getString("first_name", ""));
-        arrayList.add(map);
-
-        if (!MainActivity.sPref.getString("middle_name", "").equals("")) {
-            map = new HashMap<>();
-            map.put("Name", "Отчество");
-            map.put("Value", MainActivity.sPref.getString("middle_name", ""));
-            arrayList.add(map);
-        }
-
-
-        if(MainActivity.sPref.getInt("group_count",0) == 1) {
-            map = new HashMap<>();
-            map.put("Name", "Группа");
-            map.put("Value", MainActivity.sPref.getString("group_name0", ""));
-            groupArrayList.add(map);
-
-            SimpleAdapter adapter_group = new SimpleAdapter(this, groupArrayList, android.R.layout.simple_list_item_2,
-                    new String[]{"Name", "Value"},
-                    new int[]{android.R.id.text1, android.R.id.text2});
-
-            listViewGroups.setAdapter(adapter_group);
-        } else if (MainActivity.sPref.getInt("group_count",0) > 1) {
-            map = new HashMap<>();
-            map.put("Name", "Группа");
-            map.put("Value", MainActivity.sPref.getString("group_name" + "0", ""));
-            groupArrayList.add(map);
-
-            SimpleAdapter adapter_group = new SimpleAdapter(PersonalAccountActivity.this, groupArrayList, android.R.layout.simple_list_item_2,
-                    new String[]{"Name", "Value"},
-                    new int[]{android.R.id.text1, android.R.id.text2});
-
-            listViewGroups.setAdapter(adapter_group);
-
-            mHandler.postDelayed(mUpdateUITimerTask, 10 * 100);
-        }
-
-
-
-        SimpleAdapter adapter = new SimpleAdapter(this, arrayList, android.R.layout.simple_list_item_2,
-                new String[]{"Name", "Value"},
-                new int[]{android.R.id.text1, android.R.id.text2});
-
+        PersonalAccountAdapter adapter = new PersonalAccountAdapter(this, arrayList);
         listView.setAdapter(adapter);
 
-        listViewGroups.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (groupArrayList.size() > 0){
+            GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this, groupArrayList.get(0));
+            listViewGroups.setAdapter(adapter_group);
 
-                if (MainActivity.sPref.getInt("group_count",0) == 1) {
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(PersonalAccountActivity.this);
-                    String message = MainActivity.sPref.getString("faculty_name" + Integer.toString(position), "") +
-                            "\n" + MainActivity.sPref.getString("degree_program" + Integer.toString(position), "");
-                    builder1.setMessage(message);
-                    builder1.setCancelable(true);
+            name_text.setText("Группа");
 
-                    builder1.setPositiveButton(
-                            "Понятно",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+            ArrayList<String> arr = new ArrayList<>();
 
-                    AlertDialog alert11 = builder1.create();
-                    alert11.show();
-                } else {
-                    Intent intent = new Intent(PersonalAccountActivity.this, GroupsActivity.class);
-                    startActivity(intent);
-                };
-            };
-        });
+            for (int i = 0; i < MainActivity.sPref.getInt("group_count", 0); i++) {
+                arr.add(MainActivity.sPref.getString("group_name" + Integer.toString(i), ""));
+            }
+
+            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, arr);
+            value_spinner.setAdapter(spinnerAdapter);
+
+
+            value_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this, groupArrayList.get(position));
+                    listViewGroups.setAdapter(adapter_group);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+
+
+        } else if (groupArrayList.size() == 1) {
+            name_text.setVisibility(View.INVISIBLE);
+            value_spinner.setVisibility(View.INVISIBLE);
+            PersonalAccountAdapter adapter_group = new PersonalAccountAdapter(this, groupArrayList.get(0));
+            listViewGroups.setAdapter(adapter);
+        }
+
+
     }
 
-    private final Runnable mUpdateUITimerTask = new Runnable() {
+    //
+    /*private final Runnable mUpdateUITimerTask = new Runnable() {
         public void run() {
             count += 1;
             int group_num = count % MainActivity.sPref.getInt("group_count", 0);
@@ -142,5 +116,9 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
             }
         }
     };
-    private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();*/
+
+    private void setAdapter(ArrayList<HashMap<String, String>> settingList,ArrayList<ArrayList<HashMap<String, String>>> GroupList, int my_position){
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.testprojectwithdasha;
+package com.example.testprojectwithdasha.classes;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class News {
 //        this.link = link;
 //        this.pubDate = pubDate;
 //    }
-    News(String title, String tag, String pubDate, String description){
+public News(String title, String tag, String pubDate, String description){
         this.title = title;
         this.tag = tag;
         this.pubDate = pubDate;
