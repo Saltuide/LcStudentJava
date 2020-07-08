@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CONNECTION_TIMEOUT = 5000;
-    EditText e_mail, password, repeat_password;
-    Button log_in, registration;
+    private EditText e_mail, password, repeat_password;
+    private Button log_in, registration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         log_in.setOnClickListener(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -60,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     private void registration() throws Exception {
         if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -78,7 +78,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             ed.putString("e_mail", e_mail.getText().toString());
             ed.commit();
 
-            Intent intent = new Intent(RegistrationActivity.this, SecondActivity.class);
+            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
             startActivity(intent);
         }else{
             Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);

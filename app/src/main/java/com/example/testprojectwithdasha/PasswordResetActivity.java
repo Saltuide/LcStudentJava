@@ -29,7 +29,7 @@ public class PasswordResetActivity extends AppCompatActivity implements View.OnC
         btnBackToLogin.setOnClickListener(this);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     private void resetPassword(){
         String email = tvResetEmail.getText().toString();
         System.out.println(email);
@@ -48,7 +48,7 @@ public class PasswordResetActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()){

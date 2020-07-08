@@ -1,22 +1,17 @@
 package com.example.testprojectwithdasha;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.annotation.SuppressLint;
 import android.view.MotionEvent;
 
 import com.example.testprojectwithdasha.adapters.MenuAdapter;
-import com.google.android.material.tabs.TabItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +25,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private Button navigGoToNews;
     private Button navigGoToMenu;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -64,7 +60,19 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     };
-                };
+                }else{
+                    Intent intent;
+                    switch (position){
+                        case 0:
+                            intent = new Intent(MenuActivity.this, VerificationActivity.class);
+                            startActivity(intent);
+                            break;
+                        case 1:
+                            intent = new Intent(MenuActivity.this, SettingsActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
+                }
             };
         });
 
@@ -133,7 +141,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     public void onClick(View v) {
 

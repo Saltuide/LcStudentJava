@@ -31,7 +31,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
     public static ListView listViewGroups;
     private int count = 0;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

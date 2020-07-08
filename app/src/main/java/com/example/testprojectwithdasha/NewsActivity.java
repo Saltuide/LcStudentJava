@@ -33,7 +33,7 @@ public class NewsActivity extends AppCompatActivity{
     private Button navigGoToRasp;
     private Button navigGoToNews;
     private Button navigGoToMenu;
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +50,7 @@ public class NewsActivity extends AppCompatActivity{
 
     class SetData extends AsyncTask<Void, Void, Void>{
 
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        
         @Override
         protected Void doInBackground(Void... voids){
             String title, tag, pubDate, description;
@@ -72,7 +72,7 @@ public class NewsActivity extends AppCompatActivity{
                     news.add(new News(title, tag, pubDate, description));
                 }
             }catch(Exception e){
-                System.out.println("WE ARE FUCKED");
+                System.out.println(e.getMessage());
                 return null;
             }
             return null;
