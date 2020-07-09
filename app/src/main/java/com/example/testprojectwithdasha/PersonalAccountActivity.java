@@ -21,6 +21,7 @@ import com.example.testprojectwithdasha.adapters.GroupsAdapter;
 import com.example.testprojectwithdasha.adapters.PersonalAccountAdapter;
 import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,7 +50,9 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         PersonalAccountAdapter adapter = new PersonalAccountAdapter(this, arrayList);
         listView.setAdapter(adapter);
 
-        if (groupArrayList.size() > 0){
+        System.out.println("Кол- групп " +  groupArrayList.size());
+        System.out.println(groupArrayList);
+        if (groupArrayList.size() - 1 > 1){
             GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this, groupArrayList.get(0));
             listViewGroups.setAdapter(adapter_group);
 
@@ -80,11 +83,12 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
 
 
-        } else if (groupArrayList.size() == 1) {
+        } else if (groupArrayList.size() - 1 == 1) {
             name_text.setVisibility(View.INVISIBLE);
             value_spinner.setVisibility(View.INVISIBLE);
+            //value_spinner.setEnabled(true);
             PersonalAccountAdapter adapter_group = new PersonalAccountAdapter(this, groupArrayList.get(0));
-            listViewGroups.setAdapter(adapter);
+            listViewGroups.setAdapter(adapter_group);
         }
 
 

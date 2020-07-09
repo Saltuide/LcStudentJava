@@ -6,9 +6,12 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +59,11 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
         month = findViewById(R.id.etMonthVerif);
         year = findViewById(R.id.etYearVerif);
         passport = findViewById(R.id.etPassportVerif);
+
+        email_ =  MainActivity.sPref.getString("e_mail", "");
+        email.setText(email_);
+        email.setInputType(InputType.TYPE_NULL); // readonly
+
     }
 
     private boolean isDateValid(String day, String month, String year){
@@ -84,10 +93,8 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                 String forTest = tmp.getText().toString();
                 if (forTest.isEmpty()){
                     checker = false;
-                    //tmp.setBackgroundResource(R.drawable.red_rectangle);
                     tmp.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rectangle));
                 }else{
-                    //tmp.setBackgroundResource(android.R.color.transparent);
                     tmp.setBackground(ContextCompat.getDrawable(this, R.color.help_back));
                 }
             }
@@ -99,7 +106,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
         String validS;
         try{
             validS = new String (s.getBytes("UTF-8"), "ISO-8859-1");
-            et.setBackground(null);
+            et.setBackground(ContextCompat.getDrawable(this, R.color.help_back));
         } catch (UnsupportedEncodingException e) {
             Toast toast = Toast.makeText(this, "Вы ввели некорректные символы",
                     Toast.LENGTH_LONG);
@@ -112,10 +119,12 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
 
     public void onClick(View v){
         if(!emptyFields()){
+            Toast toast = Toast.makeText(this, "Вы заполнили не все поля",
+                    Toast.LENGTH_LONG);
+            toast.show();
             return;
         }
 
-        email_ = email.getText().toString();
         String surname_ = surname.getText().toString();
         String name_ = name.getText().toString();
         String batyaName_ = batyaName.getText().toString();
@@ -124,12 +133,6 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
         String year_ = year.getText().toString();
         passport_ = passport.getText().toString();
 
-        if(!isEmailValid(email_)){
-            Toast toast = Toast.makeText(this, "Вы ввели некорректную почту",
-                    Toast.LENGTH_LONG);
-            toast.show();
-            return;
-        }
 
         //Махинации с переменными для валидности
         finalSurname = validateFields(surname_, surname);
@@ -139,7 +142,6 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
         if(finalSurname.isEmpty() || finalName.isEmpty() || finalBatyaName.isEmpty()){
             return;
         }
-
 
         if (!isDateValid(day_, month_, year_)){
             Toast toast = Toast.makeText(this, "Вы ввели некорректную дату",
@@ -156,28 +158,60 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
 
         Requester requester = new Requester();
         requester.execute();
+
         
     }
 
     class Requester extends AsyncTask<Void, Void, Void>{
+        boolean checker = true, checkStatus = true;
+        String comment;
         protected Void doInBackground(Void ...voids){
             String ans = RequestSender.verification(VerificationActivity.this, email_,
                     finalName, finalSurname, finalBatyaName, birthday_, passport_);
 
+            System.out.println(ans);
             try {
                 JSONObject jsonObject = new JSONObject(ans);
-                System.out.println(jsonObject.getString("comment"));
+                boolean status = jsonObject.getBoolean("status");
+                if(!status){
+                    checkStatus = false;
+                    comment = jsonObject.getString("comment");
+                    return null;
+                }
+                SharedPreferences.Editor ed = MainActivity.sPref.edit();
+                ed.putBoolean("is_verificated", true);
+                ed.putString("last_name", jsonObject.getString("last_name"));
+                ed.putString("first_name", jsonObject.getString("first_name"));
+                ed.putString("middle_name", jsonObject.getString("middle_name"));
+                ed.commit();
             } catch (JSONException e) {
-                e.printStackTrace();
+                checker = false;
             }
 
-            System.out.println(ans);
             return null;
         }
 
-        protected Void onPostExecute(Void ...voids){
+        protected void onPostExecute(Void aVoid){
+            super.onPostExecute(aVoid);
 
-            return null;
+            if(!checkStatus){
+                Toast toast = Toast.makeText(VerificationActivity.this, comment,
+                        Toast.LENGTH_LONG);
+                toast.show();
+                return;
+            }
+
+            if (!checker){
+                Toast toast = Toast.makeText(VerificationActivity.this,
+                        "Не удалось установить соединение с сервером", Toast.LENGTH_LONG);
+                toast.show();
+            }
+            Intent intent = new Intent(VerificationActivity.this, MenuActivity.class);
+            intent.putExtra("activity", "verification");
+            startActivity(intent);
+            VerificationActivity.this.finish();
+
+            return;
         }
     }
 

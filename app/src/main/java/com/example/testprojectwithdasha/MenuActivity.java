@@ -10,11 +10,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.annotation.SuppressLint;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.example.testprojectwithdasha.adapters.MenuAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,6 +33,16 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        Bundle arguments = getIntent().getExtras();
+        if(arguments != null){
+            String arg = arguments.get("activity").toString();
+            if(arg.equals("verification")){
+                Toast toast = Toast.makeText(this, "Верификация прошла успешно",
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
 
         buttons = (ListView)findViewById(R.id.buttons);
         final Button btn = (Button)findViewById(R.id.btn);
