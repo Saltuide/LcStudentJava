@@ -88,7 +88,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                     tmp.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rectangle));
                 }else{
                     //tmp.setBackgroundResource(android.R.color.transparent);
-                    tmp.setBackground(null);
+                    tmp.setBackground(ContextCompat.getDrawable(this, R.color.help_back));
                 }
             }
         }
