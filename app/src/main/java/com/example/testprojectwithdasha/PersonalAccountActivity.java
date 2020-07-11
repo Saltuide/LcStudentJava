@@ -11,7 +11,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
@@ -42,6 +44,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
         final TextView name_text = (TextView)findViewById(R.id.name_txt);
         Spinner value_spinner = (Spinner)findViewById(R.id.value_spinner);
+        View view = (View)findViewById(R.id.view);
+        view.setVisibility(View.VISIBLE);
 
         arrayList = Functions.getUserSettings();
         groupArrayList = Functions.getUserGroups();
@@ -49,7 +53,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         PersonalAccountAdapter adapter = new PersonalAccountAdapter(this, arrayList);
         listView.setAdapter(adapter);
 
-        if (groupArrayList.size() > 0){
+        if (groupArrayList.size() > 1){
             GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this, groupArrayList.get(0));
             listViewGroups.setAdapter(adapter_group);
 
@@ -81,10 +85,16 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
 
         } else if (groupArrayList.size() == 1) {
-            name_text.setVisibility(View.INVISIBLE);
-            value_spinner.setVisibility(View.INVISIBLE);
+            value_spinner.setVisibility(View.GONE);
+            name_text.setVisibility(View.GONE);
             PersonalAccountAdapter adapter_group = new PersonalAccountAdapter(this, groupArrayList.get(0));
-            listViewGroups.setAdapter(adapter);
+
+            arrayList.addAll(groupArrayList.get(0));
+            adapter = new PersonalAccountAdapter(this, arrayList);
+            listView.setAdapter(adapter);
+            //listViewGroups.setAdapter(adapter_group);
+            listViewGroups.setVisibility(View.GONE);
+            view.setVisibility(View.GONE);
         }
 
 
