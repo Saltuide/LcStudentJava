@@ -34,7 +34,8 @@ public class Functions {
         HashMap<String, String> map;
         ArrayList<ArrayList<HashMap<String, String>>> group_ArrayList = new ArrayList<>();
 
-        for (int i = 0; i <= MainActivity.sPref.getInt("group_count", 0); i++) {
+
+        for (int i = 0; i < MainActivity.sPref.getInt("group_count", 0); i++) {
             ArrayList<HashMap<String, String>> arrayList = new ArrayList<>();
 
             map = new HashMap<>();
@@ -54,6 +55,7 @@ public class Functions {
 
             group_ArrayList.add(arrayList);
         }
+
 
         return group_ArrayList;
 

@@ -97,6 +97,7 @@ public class RequestSender {
         String stringBody = body.toString();
         String loginLink =  context.getResources().getString(R.string.login_link);
         String postRequest = context.getResources().getString(R.string.post_request);
+        System.out.println(stringBody);
         //посылаем запрос на сервер и получаем ответ в response
         String response = requestSender(loginLink, stringBody, postRequest);
         //преобработка ответа (убираем крайние кавычки)

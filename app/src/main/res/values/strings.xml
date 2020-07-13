@@ -33,8 +33,10 @@
 
     <string name="about_app">О ПРИЛОЖЕНИИ</string>
     <string name="logo_description">Лого нашей команды</string>
-    <string name="our_text_about_app">Добро пожаловать в приложение, личный кабинет студента ИГУ,
-        сделанное с целью сделать жизнь студентов и учителей проще. Версия "0.02"</string>
+
+    <string name="our_text_about_app">Тут будет текст, который мы придумаем и напишем и он будет
+        красиво оформлен по середине, потому что мы можем себе такое позволить</string>
+
     <string name="forgot_password">Забыли пароль ?</string>
     <string name="authorization">Авторизация</string>
     <string name="show_password">Показать пароль</string>
@@ -44,7 +46,9 @@
     <string name="repeat_pass">Повторите пароль</string>
     <string name="login">Войти</string>
     <string name="first_registration">Зарегистрироваться</string>
-    <string name="next_or_menu">В главное меню</string>
+
+    <string name="next_or_menu">Далее</string>
+
     <string name="go_back">Назад</string>
     <string name="input_email">Введите почту для восстановления пароля</string>
     <string name="fix_the_pass">Восстановить пароль</string>
