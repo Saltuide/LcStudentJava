@@ -48,7 +48,6 @@ public class RequestSender {
         try {
             con.setRequestMethod(requestType);
         } catch (ProtocolException e) {
-
             return "Проблема в задании типа соединения";
         }
 
@@ -64,7 +63,6 @@ public class RequestSender {
             wr.writeBytes(body);
             wr.flush();
         } catch (Exception e) {
-
             return "Проблема в сериализации";
         }
 
@@ -204,15 +202,19 @@ public class RequestSender {
     }
 
     public static String getNews(Activity context, String type, String year, String month,
-                                 String tag, int page) throws Exception{
+                                 String tag, int page){
         JSONObject jsonObject = new JSONObject();
-        if(type == "default") jsonObject.put("type", type);
-        else{
-            jsonObject.put("type", type);
-            jsonObject.put("year", year);
-            jsonObject.put("month", month);
-            jsonObject.put("tag", tag);
-            jsonObject.put("current_page", page);
+        try{
+            if(type == "default") jsonObject.put("type", type);
+            else{
+                jsonObject.put("type", type);
+                jsonObject.put("year", year);
+                jsonObject.put("month", month);
+                jsonObject.put("tag", tag);
+                jsonObject.put("current_page", page);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         String stringBody = jsonObject.toString();
         String newsLink =  context.getResources().getString(R.string.get_news);

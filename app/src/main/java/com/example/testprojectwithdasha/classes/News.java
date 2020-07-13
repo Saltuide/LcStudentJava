@@ -1,5 +1,7 @@
 package com.example.testprojectwithdasha.classes;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 public class News {
@@ -11,6 +13,7 @@ public class News {
     //private String mainText;
     //private String link;
     private String pubDate;
+    private Bitmap mainImage;
 
 //    News(String title, String tag, String mainImage, ArrayList<String> otherImages,
 //         String description, String mainText, String link, String pubDate){
@@ -23,11 +26,12 @@ public class News {
 //        this.link = link;
 //        this.pubDate = pubDate;
 //    }
-public News(String title, String tag, String pubDate, String description){
+public News(String title, String tag, String pubDate, String description, Bitmap mainImage){
         this.title = title;
         this.tag = tag;
         this.pubDate = pubDate;
         this.description = description;
+        this.mainImage = mainImage;
     }
 
     public String getTitle() {
@@ -60,5 +64,13 @@ public News(String title, String tag, String pubDate, String description){
 
     public void setPubDate(String pubDate) {
         this.pubDate = pubDate;
+    }
+
+    public Bitmap getMainImage(){
+        return this.mainImage;
+    }
+
+    public void setMainImage(Bitmap mainImage) {
+        this.mainImage = mainImage;
     }
 }

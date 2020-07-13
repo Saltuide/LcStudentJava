@@ -1,35 +1,23 @@
 package com.example.testprojectwithdasha;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testprojectwithdasha.adapters.GroupsAdapter;
 import com.example.testprojectwithdasha.adapters.PersonalAccountAdapter;
 import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivity {
 
-    private CustomerDataSource datasource;
     public static ArrayList<ArrayList<HashMap<String, String>>> groupArrayList = new ArrayList<>();
     public static ListView listViewGroups;
     private int count = 0;

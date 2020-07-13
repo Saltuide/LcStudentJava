@@ -71,7 +71,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                         Intent intent = new Intent(MenuActivity.this, SettingsActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
-                    };
+                    }else if (position == 1){
+                        Intent intent = new Intent(MenuActivity.this, SecondActivity.class);
+                        startActivity(intent);
+                    }
                 }else{
                     Intent intent;
                     switch (position){

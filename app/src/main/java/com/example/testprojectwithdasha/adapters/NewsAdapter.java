@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,18 +36,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         holder.tagView.setText(oneNews.getTag());
         holder.descriptionView.setText(oneNews.getDescription());
         holder.pubDateView.setText(oneNews.getPubDate());
+        holder.newsMainImageView.setImageBitmap(oneNews.getMainImage());
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         final TextView titleView, tagView, pubDateView, descriptionView;
+        final ImageView newsMainImageView;
         ViewHolder(View view){
             super(view);
             titleView = (TextView) view.findViewById(R.id.tvTitle);
             tagView = (TextView) view.findViewById(R.id.tvTag);
             pubDateView = (TextView) view.findViewById(R.id.tvPubDate);
             descriptionView = (TextView) view.findViewById(R.id.tvDescription);
+            newsMainImageView = view.findViewById(R.id.ivNewsImage);
         }
     }
 
