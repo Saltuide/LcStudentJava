@@ -23,6 +23,7 @@ import com.example.testprojectwithdasha.adapters.GroupsAdapter;
 import com.example.testprojectwithdasha.adapters.PersonalAccountAdapter;
 import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,7 +34,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
     public static ListView listViewGroups;
     private int count = 0;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +82,6 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
                 }
             });
-
 
 
         } else if (groupArrayList.size() == 1) {

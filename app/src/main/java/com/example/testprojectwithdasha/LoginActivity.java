@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    
     private void Log_in() throws Exception {
         if (android.os.Build.VERSION.SDK_INT > 9){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

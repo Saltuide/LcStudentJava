@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".GroupsActivity"></activity>
+        <activity android:name=".VerificationActivity"></activity>
+        <activity android:name=".GroupsActivity" />
         <activity android:name=".PersonalAccountActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".PasswordResetActivity" />
