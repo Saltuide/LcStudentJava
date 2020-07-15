@@ -1,34 +1,23 @@
 package com.example.testprojectwithdasha;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-
-import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
-import com.example.testprojectwithdasha.classes.News;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import android.widget.ImageButton;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 //Пусть эта хрень будет для экспериментов
 public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private newsItemFragment test;
+    private NewsFragment scrollTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +27,37 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         SetData setData = new SetData();
         setData.execute();
 
+        ImageButton imgBtn = findViewById(R.id.imageButton);
+        imgBtn.setOnClickListener(this);
+
+
     }
 
     @Override
     public void onClick(View v) {
+        System.out.println("gggGGGGggg");
+        FragmentManager fm = getSupportFragmentManager();
 
+        test = new newsItemFragment();
+        scrollTest = new NewsFragment();
+
+//        fm.beginTransaction().replace(R.id.sexAct, test).commit();
+        fm.beginTransaction().replace(R.id.sexAct, scrollTest).commit();
     }
 
+    @Override
+    public void onBackPressed() {
+//        if(test.isVisible()){
+//            test.backButtonWasPressed();
+//        }else {
+//            super.onBackPressed();
+//        }
+        if(scrollTest.isVisible()){
+            scrollTest.backButtonWasPressed();
+        }else {
+            super.onBackPressed();
+        }
+    }
 
     class SetData extends AsyncTask<Void, Void, Void> {
         Bitmap mainImage;
@@ -62,7 +75,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         }
         protected void onPostExecute(Void aVoid){
             super.onPostExecute(aVoid);
-            ImageView ivMainImage = findViewById(R.id.imageView);
+            ImageButton ivMainImage = findViewById(R.id.imageButton);
             ivMainImage.setImageBitmap(mainImage);
             return;
         }

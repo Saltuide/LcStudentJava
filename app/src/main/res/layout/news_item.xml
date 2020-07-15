@@ -82,6 +82,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDescription"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/btnOpenNewsItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="@string/openNewsItemBtnTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/vSeparator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivNewsImage" />
+
     <View
         android:id="@+id/vSeparator"
 
@@ -93,9 +105,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
 
+        app:layout_constraintHorizontal_bias="0.0"
+
+
         app:layout_constraintStart_toStartOf="parent"
-
-
-        app:layout_constraintTop_toBottomOf="@+id/ivNewsImage" />
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

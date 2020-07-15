@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
@@ -35,7 +36,9 @@ public class NewsActivity extends AppCompatActivity{
     private Button navigGoToRasp;
     private Button navigGoToNews;
     private Button navigGoToMenu;
-    
+    private NewsFragment currentNews;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +49,24 @@ public class NewsActivity extends AppCompatActivity{
 
     }
 
+    @Override
+    public void onBackPressed() {
+//        if(test.isVisible()){
+//            test.backButtonWasPressed();
+//        }else {
+//            super.onBackPressed();
+//        }
+        if(currentNews.isVisible()){
+            currentNews.backButtonWasPressed();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
     class SetData extends AsyncTask<Void, Void, Void>{
+
+
+
 
         private String errorMessage = "";
         @Override
@@ -115,7 +135,10 @@ public class NewsActivity extends AppCompatActivity{
 
                         @Override
                         public void onItemClick(View view, int position) {
-                            System.out.println(position);
+                            System.out.println("gggGGGGggg");
+                            FragmentManager fm = getSupportFragmentManager();
+                            currentNews = new NewsFragment();
+                            fm.beginTransaction().replace(R.id.newsMainLayout, currentNews).commit();
                         }
 
                         @Override
