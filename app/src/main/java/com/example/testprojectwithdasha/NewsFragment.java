@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
@@ -12,7 +13,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class NewsFragment extends Fragment {
 
-    public NewsFragment() {
+    private String fullNewsText;
+    public NewsFragment(String fullNewsText) {
+        this.fullNewsText = fullNewsText;
         // Required empty public constructor
     }
 
@@ -21,13 +24,16 @@ public class NewsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.news_fragment, container, false);
+        View view = inflater.inflate(R.layout.news_fragment, container, false);
+        TextView textView = view.findViewById(R.id.tvNewsFullText);
+        textView.setText(fullNewsText);
+        return view;
     }
 
-    public  void backButtonWasPressed() {
-        NewsFragment f = new NewsFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
 
+
+    public  void backButtonWasPressed() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(NewsFragment.this).commit();
     }
 }

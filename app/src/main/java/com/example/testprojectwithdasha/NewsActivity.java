@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +39,6 @@ public class NewsActivity extends AppCompatActivity{
     private Button navigGoToMenu;
     private NewsFragment currentNews;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,18 +46,25 @@ public class NewsActivity extends AppCompatActivity{
 
         setData = new SetData();
         setData.execute();
-
     }
 
     @Override
     public void onBackPressed() {
-//        if(test.isVisible()){
-//            test.backButtonWasPressed();
-//        }else {
-//            super.onBackPressed();
-//        }
+        // Выход в главное меню, если при открытии активити новостей, мы не открывали ни одну
+        // новость целиком - переменная остается неопределенной и все падает
+        if (currentNews == null){
+            super.onBackPressed();
+            return;
+        }
         if(currentNews.isVisible()){
             currentNews.backButtonWasPressed();
+            //делает меню обратно видимым
+            Button goToRasp = findViewById(R.id.goto_rasp);
+            goToRasp.setVisibility(View.VISIBLE);
+            Button goToMenu = findViewById(R.id.goto_menu);
+            goToMenu.setVisibility(View.VISIBLE);
+            Button goToNews = findViewById(R.id.goto_news);
+            goToNews.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }
@@ -65,10 +72,8 @@ public class NewsActivity extends AppCompatActivity{
 
     class SetData extends AsyncTask<Void, Void, Void>{
 
-
-
-
         private String errorMessage = "";
+        private String fullText;
         @Override
         protected Void doInBackground(Void... voids){
             String title, tag, pubDate, description, mainImageUrl;
@@ -103,6 +108,7 @@ public class NewsActivity extends AppCompatActivity{
                     pubDate = item.getString("news_pub_date");
                     description = item.getString("news_short_text");
                     mainImageUrl = item.getString("news_main_img");
+                    fullText = item.getString("news_main_text");
                     InputStream in = new java.net.URL(mainImageUrl).openStream();
                     mainImage = BitmapFactory.decodeStream(in);
                     news.add(new News(title, tag, pubDate, description, mainImage));
@@ -110,11 +116,9 @@ public class NewsActivity extends AppCompatActivity{
             } catch (JSONException | MalformedURLException e) {
                 errorMessage = "Неизвестная ошибка #2 (мы сами не знаем, как так вышло)";
                 e.printStackTrace();
-                System.out.println("AAAAAAAAAAAAAAAAAAAAA");
             } catch (IOException e) {
                 errorMessage = "Неизвестная ошибка #2 (мы сами не знаем, как так вышло)";
                 e.printStackTrace();
-                System.out.println("AAAAAAAAAAAAAAAAAAAAA");
             }
 
             return null;
@@ -124,8 +128,7 @@ public class NewsActivity extends AppCompatActivity{
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list);
-
+            RecyclerView recyclerView = findViewById(R.id.list);
             NewsAdapter adapter = new NewsAdapter(NewsActivity.this, news);
 
             recyclerView.setAdapter(adapter);
@@ -135,10 +138,17 @@ public class NewsActivity extends AppCompatActivity{
 
                         @Override
                         public void onItemClick(View view, int position) {
-                            System.out.println("gggGGGGggg");
                             FragmentManager fm = getSupportFragmentManager();
-                            currentNews = new NewsFragment();
+                            currentNews = new NewsFragment(fullText);
                             fm.beginTransaction().replace(R.id.newsMainLayout, currentNews).commit();
+
+                            //Скрываем нижнюю панель (почему нет общего серого фона, я хз, он сам пропадает _-_)
+                            Button goToRasp = findViewById(R.id.goto_rasp);
+                            goToRasp.setVisibility(View.INVISIBLE);
+                            Button goToMenu = findViewById(R.id.goto_menu);
+                            goToMenu.setVisibility(View.INVISIBLE);
+                            Button goToNews = findViewById(R.id.goto_news);
+                            goToNews.setVisibility(View.INVISIBLE);
                         }
 
                         @Override

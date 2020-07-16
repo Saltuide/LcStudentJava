@@ -151,9 +151,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
-
-
-
     }
 
     
