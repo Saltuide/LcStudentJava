@@ -19,53 +19,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="@string/large_text"
+            android:text="ausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdh"
             android:textColor="@color/text_color" />
 
-        <LinearLayout
-            android:id="@+id/linear0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <HorizontalScrollView
-                android:id="@+id/horizontal_scroll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/linear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imageView4"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/menu_darkgreen"
-                        tools:src="@tools:sample/avatars" />
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@android:drawable/btn_star_big_on"
-                        tools:src="@tools:sample/avatars" />
-
-                    <ImageView
-                        android:id="@+id/imageView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        app:srcCompat="@drawable/logo_light"
-                        tools:src="@tools:sample/avatars" />
-                </LinearLayout>
-
-            </HorizontalScrollView>
-        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvNewsGallery"
+            android:layout_width="399dp"
+            android:layout_height="289dp"
+            android:orientation="horizontal"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </LinearLayout>

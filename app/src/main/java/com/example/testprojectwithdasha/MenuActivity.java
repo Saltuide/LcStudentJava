@@ -34,6 +34,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        //Проверка с какого активити мы попали в это. Сработает только после прохождения
+        //верификации, чтобы сообщить об этом юзеру
         Bundle arguments = getIntent().getExtras();
         if(arguments != null){
             String arg = arguments.get("activity").toString();

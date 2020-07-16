@@ -1,5 +1,7 @@
 package com.example.testprojectwithdasha;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +12,26 @@ import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.testprojectwithdasha.adapters.NewsGalleryAdapter;
+import com.example.testprojectwithdasha.classes.OneImageFromGallery;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.List;
 
 public class NewsFragment extends Fragment {
 
     private String fullNewsText;
-    public NewsFragment(String fullNewsText) {
+    private List<OneImageFromGallery> galleryList;
+    public NewsFragment(String fullNewsText, List<OneImageFromGallery> galleryList) {
         this.fullNewsText = fullNewsText;
+        this.galleryList = galleryList;
         // Required empty public constructor
     }
 
@@ -27,10 +43,31 @@ public class NewsFragment extends Fragment {
         View view = inflater.inflate(R.layout.news_fragment, container, false);
         TextView textView = view.findViewById(R.id.tvNewsFullText);
         textView.setText(fullNewsText);
+
+//        for (int i = 0; i < images.length(); i++){
+//            String link;
+//            Bitmap image;
+//            try {
+//                link = images.getString(i);
+//                InputStream in = new java.net.URL(link).openStream();
+//                image = BitmapFactory.decodeStream(in);
+//                in.close();
+//                galleryList.add(new OneImageFromGallery(image));
+//
+//            } catch (JSONException | MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+
+        RecyclerView recyclerView = view.findViewById(R.id.rvNewsGallery);
+        NewsGalleryAdapter adapter = new NewsGalleryAdapter(galleryList);
+        recyclerView.setAdapter(adapter);
+
         return view;
     }
-
-
 
     public  void backButtonWasPressed() {
         FragmentTransaction ft = getFragmentManager().beginTransaction();

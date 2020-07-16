@@ -39,7 +39,7 @@ public class SecondActivity extends AppCompatActivity implements View.OnClickLis
         FragmentManager fm = getSupportFragmentManager();
 
         test = new newsItemFragment();
-        scrollTest = new NewsFragment("");
+        //scrollTest = new NewsFragment("");
 
 //        fm.beginTransaction().replace(R.id.sexAct, test).commit();
         fm.beginTransaction().replace(R.id.sexAct, scrollTest).commit();
