@@ -63,8 +63,12 @@ public class NewsFragment extends Fragment {
 
 
         RecyclerView recyclerView = view.findViewById(R.id.rvNewsGallery);
-        NewsGalleryAdapter adapter = new NewsGalleryAdapter(galleryList);
-        recyclerView.setAdapter(adapter);
+        if (galleryList.size() != 0) { // Если картинок в галерее нет, то зачем делать лишнюю работу
+            NewsGalleryAdapter adapter = new NewsGalleryAdapter(galleryList);
+            recyclerView.setAdapter(adapter);
+        }else{
+            recyclerView.setVisibility(View.GONE);
+        }
 
         return view;
     }
