@@ -40,11 +40,11 @@
 
     <Button
         android:id="@+id/thenbtn"
-        android:layout_width="213dp"
-        android:layout_height="43dp"
+        android:layout_width="232dp"
+        android:layout_height="38dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="32dp"
-        android:background="@color/help_back"
+        android:background="@drawable/buttons_field"
         android:text="@string/next_or_menu"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,6 +57,7 @@
         android:id="@+id/logo"
         android:layout_width="146dp"
         android:layout_height="155dp"
+        android:contentDescription="@string/logo_description"
         android:src="@drawable/logo_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

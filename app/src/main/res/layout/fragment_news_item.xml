@@ -27,11 +27,19 @@ Lorem Ipsum - это текст-рыба, часто используемый в
 Многие думают, что Lorem Ipsum - взятый с потолка псевдо-латинский набор слов, но это не совсем так. Его корни уходят в один фрагмент классической латыни 45 года н.э., то есть более двух тысячелетий назад. Ричард МакКлинток, профессор латыни из колледжа Hampden-Sydney, штат Вирджиния, взял одно из самых странных слов в Lorem Ipsum, , и занялся его поисками в классической латинской литературе. В результате он нашёл неоспоримый первоисточник Lorem Ipsum в разделах 1.10.32 и 1.10.33 книги  (), написанной Цицероном в 45 году н.э. Этот трактат по теории этики был очень популярен в эпоху Возрождения. Первая строка Lorem Ipsum, , происходит от одной из строк в разделе 1.10.32
  Цицерона и их английский перевод, сделанный H. Rackham, 1914 год." />
 
-
     <Button
         android:id="@+id/button2"
-        android:layout_width="285dp"
-        android:layout_height="391dp"
+        android:layout_width="232dp"
+        android:layout_height="123dp"
+        android:background="@color/background"
         android:text="Button" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="393dp"
+        android:layout_height="238dp"
+        android:text="КАК ПОНИМАЮ ЭТО ТОЖЕ МОЖНО ДЕЛИТАТЬ ?"
+        android:textColor="@color/text_color"
+        android:textSize="18sp" />
 
 </FrameLayout>

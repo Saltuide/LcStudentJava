@@ -14,10 +14,10 @@
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
         android:gravity="center"
-        android:hint="Последние 4 цифры паспорта"
+        android:hint="@string/last_4_numbers"
         android:inputType="numberPassword"
         android:maxLength="4"
         android:paddingLeft="15sp"
@@ -26,17 +26,18 @@
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toEndOf="@+id/etYearVerif"
         app:layout_constraintStart_toStartOf="@+id/etDayVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etMonthVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etMonthVerif"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etDayVerif"
         android:layout_width="85dp"
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
         android:gravity="center"
-        android:hint="День"
+        android:hint="@string/ver_day"
         android:inputType="date"
         android:maxLength="2"
         android:paddingLeft="15sp"
@@ -44,17 +45,18 @@
         android:textColor="@color/text_color"
         android:textColorHint="@color/hint"
         app:layout_constraintStart_toStartOf="@+id/etBatyaNameVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etBatyaNameVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etBatyaNameVerif"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etYearVerif"
         android:layout_width="85dp"
         android:layout_height="45dp"
         android:layout_marginTop="24dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
         android:gravity="center"
-        android:hint="Год"
+        android:hint="@string/ver_year"
         android:inputType="date"
         android:maxLength="4"
         android:paddingLeft="15sp"
@@ -62,7 +64,8 @@
         android:textColor="@color/text_color"
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toEndOf="@+id/etBatyaNameVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etBatyaNameVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etBatyaNameVerif"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etMonthVerif"
@@ -71,10 +74,10 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
         android:gravity="center"
-        android:hint="Месяц"
+        android:hint="@string/ver_month"
         android:inputType="date"
         android:maxLength="2"
         android:paddingLeft="15sp"
@@ -83,16 +86,17 @@
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toStartOf="@+id/etYearVerif"
         app:layout_constraintStart_toEndOf="@+id/etDayVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etBatyaNameVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etBatyaNameVerif"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etBatyaNameVerif"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
-        android:hint="Отчество"
+        android:hint="@string/middle_name"
         android:inputType="textPersonName"
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
@@ -100,16 +104,17 @@
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toEndOf="@+id/etNameVerif"
         app:layout_constraintStart_toStartOf="@+id/etNameVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etNameVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etNameVerif"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etNameVerif"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
-        android:hint="Имя"
+        android:hint="@string/first_name"
         android:inputType="textPersonName"
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
@@ -117,7 +122,8 @@
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toEndOf="@+id/etSurnameVerif"
         app:layout_constraintStart_toStartOf="@+id/etEmailVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etSurnameVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etSurnameVerif"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etEmailVerif"
@@ -126,7 +132,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="61dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
@@ -136,16 +142,17 @@
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/etSurnameVerif"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
-        android:background="@color/help_back"
+        android:background="@drawable/input_field"
         android:ems="10"
-        android:hint="Фамилия"
+        android:hint="@string/second_name"
         android:inputType="textPersonName"
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
@@ -153,7 +160,8 @@
         android:textColorHint="@color/hint"
         app:layout_constraintEnd_toEndOf="@+id/etEmailVerif"
         app:layout_constraintStart_toStartOf="@+id/etEmailVerif"
-        app:layout_constraintTop_toBottomOf="@+id/etEmailVerif" />
+        app:layout_constraintTop_toBottomOf="@+id/etEmailVerif"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/btnVerif"
@@ -162,10 +170,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="20dp"
-        android:background="@color/background"
+        android:background="@drawable/buttons_field"
         android:paddingLeft="15sp"
         android:paddingRight="15sp"
-        android:text="Подтвердить"
+        android:text="@string/accept"
         android:textColor="@color/text_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="@+id/etPassportVerif"

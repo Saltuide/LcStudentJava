@@ -20,8 +20,7 @@
         <ListView
             android:id="@+id/setting_buttons"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/btn">
+            android:layout_height="match_parent">
 
         </ListView>
 

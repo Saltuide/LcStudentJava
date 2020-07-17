@@ -14,7 +14,7 @@
         android:paddingTop="2dp"
         android:paddingRight="3dp"
         android:paddingBottom="2dp"
-        android:text="Spinner_item"
+        android:text="@string/spinner_item"
         android:textColor="@color/text_color"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"

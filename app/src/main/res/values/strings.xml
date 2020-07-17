@@ -9,7 +9,7 @@
     <string name="change_password_link">http://10.0.2.2:8000/actions_with_password/change/</string>
     <string name="get_news">http://10.0.2.2:8000/news_module/</string>
     <string name="verification_link">http://10.0.2.2:8000/verification/</string>
-    <string name="openNewsItemBtnTitle">Открыть</string>
+    <string name="openNewsItemBtnTitle">П о с м о т р е т ь</string>
 
 
     <string-array name="menu_button_verificated">
@@ -33,7 +33,7 @@
     </string-array>
 
     <string name="about_app">О ПРИЛОЖЕНИИ</string>
-    <string name="logo_description">Лого нашей команды</string>
+    <string name="logo_description">Лого как лого, чего бухтеть-то</string>
 
     <string name="our_text_about_app">Тут будет текст, который мы придумаем и напишем и он будет
         красиво оформлен по середине, потому что мы можем себе такое позволить</string>
@@ -48,7 +48,7 @@
     <string name="login">Войти</string>
     <string name="first_registration">Зарегистрироваться</string>
 
-    <string name="next_or_menu">Далее</string>
+    <string name="next_or_menu">Д а л е е</string>
 
     <string name="go_back">Назад</string>
     <string name="input_email">Введите почту для восстановления пароля</string>
@@ -62,6 +62,16 @@
     <string name="pubdate">pubDate</string>
     <string name="group">Group</string>
     <string name="menu_txt">Menu_txt</string>
+    <string name="last_4_numbers">Последние 4 цифры паспорта</string>
+    <string name="ver_day">День</string>
+    <string name="ver_year">Год</string>
+    <string name="ver_month">Месяц</string>
+    <string name="middle_name">Отчество</string>
+    <string name="first_name">Имя</string>
+    <string name="second_name">Фамилия</string>
+    <string name="accept">Подтвердить</string>
+
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -153,5 +163,10 @@
     </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lines_5_text">ausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdh</string>
+    <string name="name">Name</string>
+    <string name="value">Value</string>
+    <string name="spinner_item">Spinner_item</string>
+
 
 </resources>

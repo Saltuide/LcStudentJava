@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
-            android:text="ausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdhausdhsau dausdhasudh suadasdh"
+            android:text="@string/lines_5_text"
             android:textColor="@color/text_color" />
 
 
