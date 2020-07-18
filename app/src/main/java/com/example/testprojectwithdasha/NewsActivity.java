@@ -9,16 +9,15 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
 import com.example.testprojectwithdasha.classes.News;
-import com.example.testprojectwithdasha.classes.OneImageFromGallery;
 import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
 
 import org.json.JSONArray;
@@ -27,7 +26,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +38,7 @@ public class NewsActivity extends AppCompatActivity{
     private Button navigGoToNews;
     private Button navigGoToMenu;
     private NewsFragment currentNews;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,135 +76,9 @@ public class NewsActivity extends AppCompatActivity{
         private String errorMessage = "";
 
 
-        @Override
-        protected Void doInBackground(Void... voids){
-            String title, tag, pubDate, description, mainImageUrl;
-            Bitmap mainImage, imageFromGallery;
-            String fullText;
-            JSONArray otherImages;
-
-
-            String tmp = RequestSender.getNews(NewsActivity.this, "default",
-                        "all", "all", "all", 1);
-            JSONObject answer;
-            try {
-                answer = new JSONObject(tmp);
-            } catch (JSONException e) {
-                System.out.println(tmp);
-                errorMessage = "Ошибка при подключении к серверу";
-                return null;
-            }
-            try {
-                if (answer.getString("status") == "false"){
-                    errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло)";
-                    return null;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                JSONObject body = answer.getJSONObject("news_array");
-                for (int i = 0; i < body.names().length(); i++) {
-                    String key = body.names().getString(i);
-                    JSONObject item = body.getJSONObject(key);
-
-                    title = item.getString("news_title");
-                    tag = item.getString("news_tag");
-                    pubDate = item.getString("news_pub_date");
-                    description = item.getString("news_short_text");
-                    mainImageUrl = item.getString("news_main_img");
-                    fullText = item.getString("news_main_text");
-                    otherImages = item.getJSONArray("news_img_gallery");
-
-                    List<OneImageFromGallery> galleryList = new ArrayList<>();
-
-                    for (int j = 0; j < otherImages.length(); j++) {
-                        String link;
-                        //Bitmap image;
-                        link = otherImages.getString(j);
-                        InputStream in = new java.net.URL(link).openStream();
-                        imageFromGallery = BitmapFactory.decodeStream(in);
-                        in.close();
-                        galleryList.add(new OneImageFromGallery(imageFromGallery));
-                    }
-
-                    InputStream in = new java.net.URL(mainImageUrl).openStream();
-                    mainImage = BitmapFactory.decodeStream(in);
-                    in.close();
-
-                    news.add(new News(title, tag, pubDate, description, mainImage, fullText,
-                            galleryList));
-                }
-            } catch (JSONException | MalformedURLException e) {
-                errorMessage = "Неизвестная ошибка #2 (мы сами не знаем, как так вышло)";
-                e.printStackTrace();
-            } catch (IOException e) {
-                errorMessage = "Неизвестная ошибка #2 (мы сами не знаем, как так вышло)";
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
         @SuppressLint("ClickableViewAccessibility")
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            RecyclerView recyclerView = findViewById(R.id.list);
-            NewsAdapter adapter = new NewsAdapter(NewsActivity.this, news);
-
-            recyclerView.setAdapter(adapter);
-            recyclerView.addOnItemTouchListener(
-                    new RecyclerItemClickListener(NewsActivity.this, recyclerView ,
-                            new RecyclerItemClickListener.OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(View view, int position) {
-
-                            List<OneImageFromGallery> galleryList = null;
-                            FragmentManager fm = getSupportFragmentManager();
-
-                            //Получаем нужные параметры для показала новости целиком
-                            String fullText = news.get(position).getFullText();
-                            galleryList = news.get(position).getGalleryImages();
-
-//                            for (int i = 0; i < otherImages.length(); i++){
-//                                String link;
-//                                Bitmap image;
-//                                try {
-//                                    link = otherImages.getString(i);
-//                                    InputStream in = new java.net.URL(link).openStream();
-//                                    image = BitmapFactory.decodeStream(in);
-//                                    in.close();
-//                                    galleryList.add(new OneImageFromGallery(image));
-//
-//                                } catch (JSONException | MalformedURLException e) {
-//                                    e.printStackTrace();
-//                                } catch (IOException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-
-                            currentNews = new NewsFragment(fullText, galleryList);
-                            fm.beginTransaction().replace(R.id.newsMainLayout, currentNews).commit();
-
-                            //Скрываем нижнюю панель (почему нет общего серого фона, я хз, он сам пропадает _-_)
-                            Button goToRasp = findViewById(R.id.goto_rasp);
-                            goToRasp.setVisibility(View.INVISIBLE);
-                            Button goToMenu = findViewById(R.id.goto_menu);
-                            goToMenu.setVisibility(View.INVISIBLE);
-                            Button goToNews = findViewById(R.id.goto_news);
-                            goToNews.setVisibility(View.INVISIBLE);
-                        }
-
-                        @Override
-                        public void onLongItemClick(View view, int position) {
-
-                        }
-                    })
-            );
-
+        protected void onPreExecute(){
+            super.onPreExecute();
             navigGoToRasp = (Button) findViewById(R.id.goto_rasp);
             navigGoToRasp.setOnTouchListener(new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
@@ -251,12 +124,167 @@ public class NewsActivity extends AppCompatActivity{
                     return true;
                 }
             });
+            return;
+        };
+
+        @Override
+        protected Void doInBackground(Void... voids){
+            String title, tag, pubDate, description, mainImageUrl;
+            Bitmap mainImage;
+            JSONArray otherImages;
+            String fullText;
+
+
+            String tmp = RequestSender.getNews(NewsActivity.this, "default",
+                        "all", "all", "all", 1);
+            JSONObject answer;
+
+            try {
+                answer = new JSONObject(tmp);
+            } catch (JSONException e) {
+                System.out.println(tmp);
+                errorMessage = "Ошибка при подключении к серверу";
+                return null;
+            }
+
+            try {
+                if (answer.getString("status") == "false"){
+                    errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло)";
+                    return null;
+                }
+            } catch (JSONException e) {
+                errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло)";
+                return null;
+            }
+
+            JSONObject body;
+            try {
+                body = answer.getJSONObject("news_array");
+            } catch (JSONException e) {
+                errorMessage = "Неизвестный ответ сервера";
+                return null;
+            }
+
+            for (int i = 0; i < body.names().length(); i++) {
+                try {
+                    String key = body.names().getString(i);
+                    JSONObject item = body.getJSONObject(key);
+                    title = item.getString("news_title");
+                    tag = item.getString("news_tag");
+                    pubDate = item.getString("news_pub_date");
+                    description = item.getString("news_short_text");
+                    mainImageUrl = item.getString("news_main_img");
+                    fullText = item.getString("news_main_text");
+                    otherImages = item.getJSONArray("news_img_gallery");
+                } catch (JSONException e) {
+                    errorMessage = "Неизвестная ошибка (чо-та с get в цикле)";
+                    continue;
+                }
+                    try {
+                        InputStream in = new java.net.URL(mainImageUrl).openStream();
+                        mainImage = BitmapFactory.decodeStream(in);
+                        in.close();
+                    } catch (IOException e) {
+                        mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
+                                R.drawable.error_pic);
+                    }
+                    news.add(new News(title, tag, pubDate, description, mainImage, fullText, otherImages));
+                }
+
+            return null;
+        }
+
+        @SuppressLint("ClickableViewAccessibility")
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            RecyclerView recyclerView = findViewById(R.id.list);
+            NewsAdapter adapter = new NewsAdapter(NewsActivity.this, news);
+
+            recyclerView.setAdapter(adapter);
+            recyclerView.addOnItemTouchListener(
+                    new RecyclerItemClickListener(NewsActivity.this, recyclerView ,
+                            new RecyclerItemClickListener.OnItemClickListener() {
+
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            NewsImgGalleryThread secondThread = new NewsImgGalleryThread();
+                            secondThread.execute(position);
+                            RecyclerView newsActivityView = findViewById(R.id.list);
+
+                            newsActivityView.setClickable(false);
+                            //view,putDickInOurMouthesPlsJustWork(PLEASE);//god bless
+                        }
+
+                        @Override
+                        public void onLongItemClick(View view, int position) {
+
+                        }
+                    })
+            );
 
             if (!errorMessage.isEmpty()){
                 Toast toast = Toast.makeText(NewsActivity.this, errorMessage,
                         Toast.LENGTH_LONG);
                 toast.show();
             }
+        }
+    }
+// подгрузка галереи отдельно от главных картинок
+    class NewsImgGalleryThread extends AsyncTask<Integer, Void, Void>{
+        Bitmap imageFromGallery;
+        private int newsPositionToShow;
+        private List<Bitmap> galleryList = new ArrayList<>();
+        private JSONArray otherImages;
+
+        @Override
+        protected void onPreExecute(){
+
+
+        }
+
+        @Override
+        protected Void doInBackground(Integer... position) {
+            newsPositionToShow = position[0];
+            otherImages = news.get(newsPositionToShow).getOtherImages();
+            for (int j = 0; j < otherImages.length(); j++) {
+                String link;
+                //Bitmap image;
+                try {
+                    link = otherImages.getString(j);
+                    InputStream in = new java.net.URL(link).openStream();
+                    imageFromGallery = BitmapFactory.decodeStream(in);
+                    in.close();
+                    galleryList.add(imageFromGallery);
+                } catch (IOException | JSONException e) {
+//                    errorMessage = "Доступ к информационному ресурсу огрничен " +
+//                            "распоряжением РКН от 23.19.2016 № 325.27.2";
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid){
+            super.onPostExecute(aVoid);
+            System.out.println(newsPositionToShow);
+
+            FragmentManager fm = getSupportFragmentManager();
+
+            //Получаем нужные параметры для показала новости целиком
+            String fullText = news.get(newsPositionToShow).getFullText();
+
+            currentNews = new NewsFragment(fullText, galleryList);
+            fm.beginTransaction().replace(R.id.newsMainLayout, currentNews).commit();
+
+            //Скрываем нижнюю панель (почему нет общего серого фона, я хз, он сам пропадает _-_)
+            Button goToRasp = findViewById(R.id.goto_rasp);
+            goToRasp.setVisibility(View.INVISIBLE);
+            Button goToMenu = findViewById(R.id.goto_menu);
+            goToMenu.setVisibility(View.INVISIBLE);
+            Button goToNews = findViewById(R.id.goto_news);
+            goToNews.setVisibility(View.INVISIBLE);
         }
     }
 

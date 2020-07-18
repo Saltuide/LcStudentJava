@@ -14,17 +14,17 @@ public class News {
     private String pubDate;
     private Bitmap mainImage;
     private String fullText;
-    private List<OneImageFromGallery> galleryImages;
+    private JSONArray otherImages;
 
 public News(String title, String tag, String pubDate, String description, Bitmap mainImage,
-            String fullText, List<OneImageFromGallery> galleryImages){
+            String fullText, JSONArray otherImages){
         this.title = title;
         this.tag = tag;
         this.pubDate = pubDate;
         this.description = description;
         this.mainImage = mainImage;
         this.fullText = fullText;
-        this.galleryImages = galleryImages;
+        this.otherImages = otherImages;
     }
 
     public String getTitle() {
@@ -51,7 +51,7 @@ public News(String title, String tag, String pubDate, String description, Bitmap
         return this.fullText;
     }
 
-    public List<OneImageFromGallery> getGalleryImages() {
-        return this.galleryImages;
-    }
+    public JSONArray getOtherImages() { return this.otherImages; }
+
+
 }

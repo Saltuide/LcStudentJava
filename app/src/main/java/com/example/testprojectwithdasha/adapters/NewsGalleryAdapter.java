@@ -1,6 +1,7 @@
 package com.example.testprojectwithdasha.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,9 @@ import java.util.List;
 public class NewsGalleryAdapter extends RecyclerView.Adapter<NewsGalleryAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<OneImageFromGallery> images;
+    private List<Bitmap> images;
 
-    public NewsGalleryAdapter(List<OneImageFromGallery> images){
+    public NewsGalleryAdapter(List<Bitmap> images){
         //this.inflater = LayoutInflater.from(context);
         this.images = images;
 }
@@ -33,8 +34,8 @@ public class NewsGalleryAdapter extends RecyclerView.Adapter<NewsGalleryAdapter.
     }
 
     public void onBindViewHolder(NewsGalleryAdapter.ViewHolder holder, int position){
-        OneImageFromGallery currentImage = images.get(position);
-        holder.imageButton.setImageBitmap(currentImage.getImage());
+        Bitmap currentImage = images.get(position);
+        holder.imageButton.setImageBitmap(currentImage);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

@@ -28,11 +28,10 @@ import java.util.List;
 public class NewsFragment extends Fragment {
 
     private String fullNewsText;
-    private List<OneImageFromGallery> galleryList;
-    public NewsFragment(String fullNewsText, List<OneImageFromGallery> galleryList) {
+    private List<Bitmap> galleryList;
+    public NewsFragment(String fullNewsText, List<Bitmap> galleryList) {
         this.fullNewsText = fullNewsText;
         this.galleryList = galleryList;
-        // Required empty public constructor
     }
 
     @Nullable
@@ -43,25 +42,6 @@ public class NewsFragment extends Fragment {
         View view = inflater.inflate(R.layout.news_fragment, container, false);
         TextView textView = view.findViewById(R.id.tvNewsFullText);
         textView.setText(fullNewsText);
-
-//        for (int i = 0; i < images.length(); i++){
-//            String link;
-//            Bitmap image;
-//            try {
-//                link = images.getString(i);
-//                InputStream in = new java.net.URL(link).openStream();
-//                image = BitmapFactory.decodeStream(in);
-//                in.close();
-//                galleryList.add(new OneImageFromGallery(image));
-//
-//            } catch (JSONException | MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-
         RecyclerView recyclerView = view.findViewById(R.id.rvNewsGallery);
         if (galleryList.size() != 0) { // Если картинок в галерее нет, то зачем делать лишнюю работу
             NewsGalleryAdapter adapter = new NewsGalleryAdapter(galleryList);
