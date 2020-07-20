@@ -10,7 +10,7 @@
     <ImageButton
         android:id="@+id/imgFromNewsGallery"
         android:layout_width="wrap_content"
-        android:layout_height="252dp"
+        android:layout_height="222dp"
         android:layout_marginTop="16dp"
         android:background="@color/background"
         app:layout_constraintEnd_toEndOf="parent"

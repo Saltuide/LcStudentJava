@@ -26,7 +26,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvNewsGallery"
-            android:layout_width="wrap_content"
+            android:layout_width="352dp"
             android:layout_height="252dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
