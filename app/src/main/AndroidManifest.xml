@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.testprojectwithdasha">
 
+
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-sdk android:minSdkVersion="3"  android:targetSdkVersion="4" />
+    <uses-sdk android:targetSdkVersion="4" />
 
     <supports-screens
         android:xlargeScreens="true"

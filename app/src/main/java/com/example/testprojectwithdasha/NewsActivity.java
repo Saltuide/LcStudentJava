@@ -12,13 +12,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
 import com.example.testprojectwithdasha.classes.News;
 import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
+import com.example.testprojectwithdasha.fragments.NewsFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
