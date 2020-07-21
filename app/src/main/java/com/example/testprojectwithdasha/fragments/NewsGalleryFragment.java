@@ -22,19 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BlankFragment extends DialogFragment {
+public class NewsGalleryFragment extends DialogFragment {
 
     private MyViewPagerAdapter1 myViewPagerAdapter;
     private List<Bitmap> images = new ArrayList<>();
     private ViewPager viewPager;
     private int selectedPosition = 0;
 
-    public BlankFragment() {
+    public NewsGalleryFragment() {
         // Required empty public constructor
     }
 
-    public static BlankFragment newInstance(List<Bitmap> images, int position) {
-        BlankFragment fragment = new BlankFragment();
+    public static NewsGalleryFragment newInstance(List<Bitmap> images, int position) {
+        NewsGalleryFragment fragment = new NewsGalleryFragment();
         fragment.images = images;
         fragment.selectedPosition = position;
 
@@ -52,7 +52,7 @@ public class BlankFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_blank, container, false);
+        View v = inflater.inflate(R.layout.fragment_news_gallery, container, false);
         viewPager = v.findViewById(R.id.viewpager1);
         myViewPagerAdapter = new MyViewPagerAdapter1();
         viewPager.setAdapter(myViewPagerAdapter);
