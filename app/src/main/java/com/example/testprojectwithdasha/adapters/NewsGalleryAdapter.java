@@ -18,11 +18,9 @@ import java.util.List;
 
 public class NewsGalleryAdapter extends RecyclerView.Adapter<NewsGalleryAdapter.ViewHolder> {
 
-    private LayoutInflater inflater;
     private List<Bitmap> images;
 
     public NewsGalleryAdapter(List<Bitmap> images){
-        //this.inflater = LayoutInflater.from(context);
         this.images = images;
 }
 

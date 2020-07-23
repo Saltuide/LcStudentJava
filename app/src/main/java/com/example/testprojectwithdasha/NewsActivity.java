@@ -210,10 +210,10 @@ public class NewsActivity extends AppCompatActivity{
                         public void onItemClick(View view, int position) {
                             NewsImgGalleryThread secondThread = new NewsImgGalleryThread();
                             secondThread.execute(position);
-                            RecyclerView newsActivityView = findViewById(R.id.list);
+//                            RecyclerView newsActivityView = findViewById(R.id.list);
 
-                            newsActivityView.setClickable(false);
-                            //view,putDickInOurMouthesPlsJustWork(PLEASE);//god bless
+
+
                         }
 
                         @Override
@@ -235,11 +235,22 @@ public class NewsActivity extends AppCompatActivity{
         Bitmap imageFromGallery;
         private int newsPositionToShow;
         private List<Bitmap> galleryList = new ArrayList<>();
+        //для дальнейшего отображения галерии, ибо по ссылке он качает многновенно
+        /*
+        Логика в следующем: для отображения картинок в прокрутчике в самой новости требует
+        битмап, мы качаем картинки и пихаем их в ButtonView в адаптер. Для полноэкранной галерии
+        же выгоднее качать снова картинки галереей Glide, нежели передавать туда битмапы и
+         переводить их в биты, дабы засунуть в констукртор. Glide качает по ссылке мгновенно,
+         как я понял там дело в том, что она грузит первые картинки и уже их отображает,
+        а другие подгружает уже потом, так что для NewsFragment собираем лист битмапов, а для
+        NewsGalleryFragment лист строк. В NewsFragment передаем оба листа, т.к. из него вызывается
+        второй фрагмент.
+         */
         private JSONArray otherImages;
+        private List<String> allImagesList = new ArrayList<>();
 
         @Override
         protected void onPreExecute(){
-
 
         }
 
@@ -252,6 +263,7 @@ public class NewsActivity extends AppCompatActivity{
                 //Bitmap image;
                 try {
                     link = otherImages.getString(j);
+                    allImagesList.add(link);
                     InputStream in = new java.net.URL(link).openStream();
                     imageFromGallery = BitmapFactory.decodeStream(in);
                     in.close();
@@ -275,7 +287,7 @@ public class NewsActivity extends AppCompatActivity{
             //Получаем нужные параметры для показала новости целиком
             String fullText = news.get(newsPositionToShow).getFullText();
 
-            currentNews = new NewsFragment(fullText, galleryList);
+            currentNews = new NewsFragment(fullText, galleryList, allImagesList);
             fm.beginTransaction().replace(R.id.newsMainLayout, currentNews).commit();
 
             //Скрываем нижнюю панель (почему нет общего серого фона, я хз, он сам пропадает _-_)

@@ -24,10 +24,12 @@ public class NewsFragment extends Fragment {
 
     private String fullNewsText;
     private List<Bitmap> galleryList;
+    private List<String> allImagesForGallery;
 
-    public NewsFragment(String fullNewsText, List<Bitmap> galleryList) {
+    public NewsFragment(String fullNewsText, List<Bitmap> galleryList, List<String> allImagesForGallery) {
         this.fullNewsText = fullNewsText;
         this.galleryList = galleryList;
+        this.allImagesForGallery = allImagesForGallery;
     }
 
     @Nullable
@@ -51,11 +53,9 @@ public class NewsFragment extends Fragment {
 
                 FragmentManager ft = getFragmentManager();
 
-                NewsGalleryFragment newFragment = NewsGalleryFragment.newInstance(galleryList, position);
+                NewsGalleryFragment newFragment = NewsGalleryFragment.newInstance(position,
+                        allImagesForGallery);
                 newFragment.show(ft, "kappa");
-
-
-
             }
 
             @Override

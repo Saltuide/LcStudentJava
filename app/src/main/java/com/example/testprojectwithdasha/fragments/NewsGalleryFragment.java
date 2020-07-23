@@ -1,7 +1,6 @@
 package com.example.testprojectwithdasha.fragments;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -12,31 +11,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.testprojectwithdasha.R;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class NewsGalleryFragment extends DialogFragment {
 
-    private MyViewPagerAdapter1 myViewPagerAdapter;
-    private List<Bitmap> images = new ArrayList<>();
+    private MyViewPagerAdapter myViewPagerAdapter;
     private ViewPager viewPager;
     private int selectedPosition = 0;
+    private List<String> allImagesForGallery;
+    private TextView counter;
 
     public NewsGalleryFragment() {
         // Required empty public constructor
     }
 
-    public static NewsGalleryFragment newInstance(List<Bitmap> images, int position) {
+    public static NewsGalleryFragment newInstance(int position, List<String> allImagesForGallery) {
         NewsGalleryFragment fragment = new NewsGalleryFragment();
-        fragment.images = images;
         fragment.selectedPosition = position;
+        fragment.allImagesForGallery = allImagesForGallery;
 
         return fragment;
     }
@@ -53,8 +52,9 @@ public class NewsGalleryFragment extends DialogFragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_news_gallery, container, false);
-        viewPager = v.findViewById(R.id.viewpager1);
-        myViewPagerAdapter = new MyViewPagerAdapter1();
+        viewPager = v.findViewById(R.id.viewpager);
+        counter = v.findViewById(R.id.tvPicNumNewsGal);
+        myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
         setCurrentItem(selectedPosition);
@@ -65,7 +65,11 @@ public class NewsGalleryFragment extends DialogFragment {
 
     private void setCurrentItem(int position){
         viewPager.setCurrentItem(position, false);
+        setCounterInfo(position);
+    }
 
+    private void setCounterInfo(int position){
+        counter.setText((position + 1) + " из " + (allImagesForGallery.size()));
     }
 
     ViewPager.OnPageChangeListener viewPagerPageChangeListener = new ViewPager.OnPageChangeListener(){
@@ -77,7 +81,7 @@ public class NewsGalleryFragment extends DialogFragment {
 
         @Override
         public void onPageSelected(int position) {
-
+            setCounterInfo(position);
         }
 
         @Override
@@ -87,11 +91,11 @@ public class NewsGalleryFragment extends DialogFragment {
     };
 
 
-    public class MyViewPagerAdapter1 extends PagerAdapter {
+    public class MyViewPagerAdapter extends PagerAdapter {
 
         private LayoutInflater layoutInflater;
 
-        public MyViewPagerAdapter1() {
+        public MyViewPagerAdapter() {
         }
 
         @Override
@@ -99,15 +103,11 @@ public class NewsGalleryFragment extends DialogFragment {
             layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.image_fullscreen_preview, container, false);
 
-            ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
+            ImageView imageViewPreview = view.findViewById(R.id.image_preview);
 
-            Bitmap image = images.get(position);
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            //image.recycle();
+            String image = allImagesForGallery.get(position);
 
-            Glide.with(getActivity()).load(byteArray)
+            Glide.with(getActivity()).load(image)
                     .thumbnail(0.5f)
                     .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -120,13 +120,13 @@ public class NewsGalleryFragment extends DialogFragment {
 
         @Override
         public int getCount() {
-            return images.size();
+            return allImagesForGallery.size();
 
         }
 
         @Override
         public boolean isViewFromObject(View view, Object obj) {
-            return view == ((View) obj);
+            return view == (obj);
         }
 
 
