@@ -24,12 +24,10 @@ public class NewsFragment extends Fragment {
 
     private String fullNewsText;
     private List<Bitmap> galleryList;
-    private List<String> allImagesForGallery;
 
-    public NewsFragment(String fullNewsText, List<Bitmap> galleryList, List<String> allImagesForGallery) {
+    public NewsFragment(String fullNewsText, List<Bitmap> galleryList) {
         this.fullNewsText = fullNewsText;
         this.galleryList = galleryList;
-        this.allImagesForGallery = allImagesForGallery;
     }
 
     @Nullable
@@ -47,14 +45,9 @@ public class NewsFragment extends Fragment {
                 getContext(), recyclerView, new NewsGalleryAdapter.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                Bundle bundle = new Bundle();
-//                bundle.putLis("images", galleryList);
-//                bundle.putInt("position", position);
-
                 FragmentManager ft = getFragmentManager();
-
                 NewsGalleryFragment newFragment = NewsGalleryFragment.newInstance(position,
-                        allImagesForGallery);
+                        galleryList);
                 newFragment.show(ft, "kappa");
             }
 

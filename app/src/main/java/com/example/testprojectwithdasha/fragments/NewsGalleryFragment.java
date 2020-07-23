@@ -1,6 +1,7 @@
 package com.example.testprojectwithdasha.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -10,12 +11,11 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.testprojectwithdasha.R;
+import com.github.chrisbanes.photoview.PhotoView;
+
 
 import java.util.List;
 
@@ -25,14 +25,15 @@ public class NewsGalleryFragment extends DialogFragment {
     private MyViewPagerAdapter myViewPagerAdapter;
     private ViewPager viewPager;
     private int selectedPosition = 0;
-    private List<String> allImagesForGallery;
+    private List<Bitmap> allImagesForGallery;
     private TextView counter;
+
 
     public NewsGalleryFragment() {
         // Required empty public constructor
     }
 
-    public static NewsGalleryFragment newInstance(int position, List<String> allImagesForGallery) {
+    public static NewsGalleryFragment newInstance(int position, List<Bitmap> allImagesForGallery) {
         NewsGalleryFragment fragment = new NewsGalleryFragment();
         fragment.selectedPosition = position;
         fragment.allImagesForGallery = allImagesForGallery;
@@ -76,12 +77,30 @@ public class NewsGalleryFragment extends DialogFragment {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            //Возвращаем картинкам исходный размер, на случай если они были зазумлены
+            /*тут порой происходит ошибка в строке
+            PhotoView currentPhoto = view.findViewById(R.id.image_preview)
+            Attempt to invoke virtual method 'android.view.View android.view.View.findViewById(int)'
+            on a null object reference
+            причем так было, когда я обращался просто по position, без цикла. Если кто поймет, как
+            это починить нормальным образом - your welcome.
+            P.S. фор нужен, чтобы точно все зарезумить, а то бывали косяки.
+            */
+            try {
+                for (int i = 0; i < position + 1; i++) {
+                    View view = viewPager.getChildAt(i);
+                    PhotoView currentPhoto = view.findViewById(R.id.image_preview);
+                    currentPhoto.setScale(currentPhoto.getMinimumScale());
+                }
+            } catch (Exception e) {
+                //e.printStackTrace();
+            }
         }
 
         @Override
         public void onPageSelected(int position) {
             setCounterInfo(position);
+
         }
 
         @Override
@@ -100,23 +119,21 @@ public class NewsGalleryFragment extends DialogFragment {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = layoutInflater.inflate(R.layout.image_fullscreen_preview, container, false);
 
-            ImageView imageViewPreview = view.findViewById(R.id.image_preview);
+            layoutInflater = (LayoutInflater) getActivity().getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
+            View view = layoutInflater.inflate(R.layout.image_fullscreen_preview, container,
+                    false);
 
-            String image = allImagesForGallery.get(position);
-
-            Glide.with(getActivity()).load(image)
-                    .thumbnail(0.5f)
-                    .crossFade()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageViewPreview);
+            PhotoView photoView = view.findViewById(R.id.image_preview);
+            Bitmap bitmap = allImagesForGallery.get(position);
+            photoView.setImageBitmap(bitmap);
 
             container.addView(view);
 
             return view;
         }
+
 
         @Override
         public int getCount() {
