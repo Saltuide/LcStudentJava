@@ -15,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.bumptech.glide.request.target.Target;
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
 import com.example.testprojectwithdasha.classes.News;
 import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
@@ -28,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 
 public class NewsActivity extends AppCompatActivity{
@@ -180,14 +184,26 @@ public class NewsActivity extends AppCompatActivity{
                     errorMessage = "Неизвестная ошибка (чо-та с get в цикле)";
                     continue;
                 }
-                    try {
-                        InputStream in = new java.net.URL(mainImageUrl).openStream();
-                        mainImage = BitmapFactory.decodeStream(in);
-                        in.close();
-                    } catch (IOException e) {
-                        mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
-                                R.drawable.error_pic);
-                    }
+                try {
+//                        InputStream in = new java.net.URL(mainImageUrl).openStream();
+//                        mainImage = BitmapFactory.decodeStream(in);
+//                        in.close();
+                    FutureTarget<Bitmap> futureTarget =
+                            Glide.with(NewsActivity.this)
+                                    .asBitmap()
+                                    .load(mainImageUrl)
+                                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+
+                    mainImage = futureTarget.get();
+                    //Glide.with(NewsActivity.this).clear(futureTarget);
+                } catch (InterruptedException e) {
+                    mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
+                            R.drawable.error_pic);
+                } catch (ExecutionException e) {
+                    mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
+                            R.drawable.error_pic);
+                }
+
                     news.add(new News(title, tag, pubDate, description, mainImage, fullText, otherImages));
                 }
 
@@ -252,13 +268,20 @@ public class NewsActivity extends AppCompatActivity{
                 //Bitmap image;
                 try {
                     link = otherImages.getString(j);
-                    InputStream in = new java.net.URL(link).openStream();
-                    imageFromGallery = BitmapFactory.decodeStream(in);
-                    in.close();
+                    FutureTarget<Bitmap> futureTarget =
+                            Glide.with(NewsActivity.this)
+                                    .asBitmap()
+                                    .load(link)
+                                    .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+
+                    imageFromGallery = futureTarget.get();
                     galleryList.add(imageFromGallery);
-                } catch (IOException | JSONException e) {
+                } catch (InterruptedException e) {
 //                    errorMessage = "Доступ к информационному ресурсу огрничен " +
 //                            "распоряжением РКН от 23.19.2016 № 325.27.2";
+                    e.printStackTrace();
+                } catch (ExecutionException | JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
