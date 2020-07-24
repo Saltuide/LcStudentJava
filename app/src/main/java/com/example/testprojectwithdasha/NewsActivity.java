@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -64,12 +65,14 @@ public class NewsActivity extends AppCompatActivity{
         if(currentNews.isVisible()){
             currentNews.backButtonWasPressed();
             //делает меню обратно видимым
-            Button goToRasp = findViewById(R.id.goto_rasp);
-            goToRasp.setVisibility(View.VISIBLE);
-            Button goToMenu = findViewById(R.id.goto_menu);
-            goToMenu.setVisibility(View.VISIBLE);
-            Button goToNews = findViewById(R.id.goto_news);
-            goToNews.setVisibility(View.VISIBLE);
+//            Button goToRasp = findViewById(R.id.goto_rasp);
+//            goToRasp.setVisibility(View.VISIBLE);
+//            Button goToMenu = findViewById(R.id.goto_menu);
+//            goToMenu.setVisibility(View.VISIBLE);
+//            Button goToNews = findViewById(R.id.goto_news);
+//            goToNews.setVisibility(View.VISIBLE);
+            LinearLayoutCompat newsNavigLayout = findViewById(R.id.navigBtnContainerNews);
+            newsNavigLayout.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }
@@ -268,6 +271,8 @@ public class NewsActivity extends AppCompatActivity{
                 //Bitmap image;
                 try {
                     link = otherImages.getString(j);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    System.out.println(link);
                     FutureTarget<Bitmap> futureTarget =
                             Glide.with(NewsActivity.this)
                                     .asBitmap()
@@ -297,15 +302,17 @@ public class NewsActivity extends AppCompatActivity{
             String fullText = news.get(newsPositionToShow).getFullText();
 
             currentNews = new NewsFragment(fullText, galleryList);
-            fm.beginTransaction().replace(R.id.newsMainLayout, currentNews).commit();
+            fm.beginTransaction().replace(R.id.newsLayout, currentNews).commit();
 
             //Скрываем нижнюю панель (почему нет общего серого фона, я хз, он сам пропадает _-_)
-            Button goToRasp = findViewById(R.id.goto_rasp);
-            goToRasp.setVisibility(View.INVISIBLE);
-            Button goToMenu = findViewById(R.id.goto_menu);
-            goToMenu.setVisibility(View.INVISIBLE);
-            Button goToNews = findViewById(R.id.goto_news);
-            goToNews.setVisibility(View.INVISIBLE);
+//            Button goToRasp = findViewById(R.id.goto_rasp);
+//            goToRasp.setVisibility(View.INVISIBLE);
+//            Button goToMenu = findViewById(R.id.goto_menu);
+//            goToMenu.setVisibility(View.INVISIBLE);
+//            Button goToNews = findViewById(R.id.goto_news);
+//            goToNews.setVisibility(View.INVISIBLE);
+            LinearLayoutCompat newsNavigLayout = findViewById(R.id.navigBtnContainerNews);
+            newsNavigLayout.setVisibility(View.INVISIBLE);
         }
     }
 

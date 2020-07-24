@@ -129,6 +129,18 @@ public class NewsGalleryFragment extends DialogFragment {
             Bitmap bitmap = allImagesForGallery.get(position);
             photoView.setImageBitmap(bitmap);
 
+            photoView.setOnClickListener(new PhotoView.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (counter.getVisibility() == View.INVISIBLE){
+                        counter.setVisibility(View.VISIBLE);
+                    }else{
+                        counter.setVisibility(View.INVISIBLE);
+                    }
+
+                }
+            });
+
             container.addView(view);
 
             return view;
