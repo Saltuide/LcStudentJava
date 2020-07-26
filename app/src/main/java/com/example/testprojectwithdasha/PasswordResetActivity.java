@@ -1,17 +1,17 @@
 package com.example.testprojectwithdasha;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class PasswordResetActivity extends AppCompatActivity implements View.OnClickListener{
     TextView tvInfoText, tvResetEmail;
@@ -29,26 +29,35 @@ public class PasswordResetActivity extends AppCompatActivity implements View.OnC
         btnBackToLogin.setOnClickListener(this);
     }
 
-    
     private void resetPassword(){
         String email = tvResetEmail.getText().toString();
-        System.out.println(email);
+
+        String response = RequestSender.sRequestResetPassword(
+                PasswordResetActivity.this, email);
+
+        JSONObject answer;
+        try{
+            answer = new JSONObject(response);
+        } catch (JSONException e) {
+            Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         try {
-            Map<String, String> response = RequestSender.sRequestResetPassword(PasswordResetActivity.this, email);
-            System.out.println(response.get("status"));
-            if(response.get("status").equals("true")){
+            if (answer.getString("status").equals("true")) {
                 tvInfoText.setText("На вашу почту отправлено письмо с ссылкой для восстановления" +
                         " пароля. Перейдите по ней для смены пароля в течение одного дня.");
-            }else{
-                Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);
+            } else {
+                Toast toast = Toast.makeText(this, answer.getString("comment"),
+                        Toast.LENGTH_LONG);
                 toast.show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (JSONException e) {
+            Toast.makeText(this, "Неизвестная ошибка при считывании ответа",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
-    
     @Override
     public void onClick(View v) {
         switch (v.getId()){

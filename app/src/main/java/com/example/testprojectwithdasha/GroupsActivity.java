@@ -4,13 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 
@@ -23,8 +21,8 @@ public class GroupsActivity extends AppCompatActivity {
         ListView groups_list = (ListView) findViewById(R.id.groups_list);
         ArrayList<String> arrayList = new ArrayList<>();
 
-        for (int i = 0; i < MainActivity.sPref.getInt("group_count", 0); i++) {
-            arrayList.add(MainActivity.sPref.getString("group_name" + Integer.toString(i), ""));
+        for (int i = 0; i < AboutAppActivity.sPref.getInt("group_count", 0); i++) {
+            arrayList.add(AboutAppActivity.sPref.getString("group_name" + Integer.toString(i), ""));
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -39,8 +37,8 @@ public class GroupsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(GroupsActivity.this);
-                String message = MainActivity.sPref.getString("faculty_name" + Integer.toString(position), "") +
-                        "\n" + MainActivity.sPref.getString("degree_program" + Integer.toString(position), "");
+                String message = AboutAppActivity.sPref.getString("faculty_name" + Integer.toString(position), "") +
+                        "\n" + AboutAppActivity.sPref.getString("degree_program" + Integer.toString(position), "");
                 builder1.setMessage(message);
                 builder1.setCancelable(true);
 

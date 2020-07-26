@@ -1,20 +1,15 @@
 package com.example.testprojectwithdasha;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.testprojectwithdasha.adapters.MenuAdapter;
 
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final int CONNECTION_TIMEOUT = 5000;
+public class AboutAppActivity extends AppCompatActivity implements View.OnClickListener {
     Button then;
     public static SharedPreferences sPref;
 
@@ -32,10 +27,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sPref = getPreferences(MODE_PRIVATE);
         Boolean State_of_the_input  = sPref.getBoolean("status", false);
 
-        if (State_of_the_input) {
-            Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+        Bundle arguments = getIntent().getExtras();
+
+        //пока что параметры могут прийти только из активити "о приложении"
+        if (State_of_the_input && arguments == null) {
+            Intent intent = new Intent(AboutAppActivity.this, MenuActivity.class);
             startActivity(intent);
-            MainActivity.this.finish();
+            AboutAppActivity.this.finish();
         }
 
     };
@@ -43,19 +41,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.thenbtn) {
-
             //Получаем настройки приложения
             sPref = getPreferences(MODE_PRIVATE);
             Boolean StateOfTheInput  = sPref.getBoolean("status", false);
 
             if (StateOfTheInput) {
-                Intent intent = new Intent(MainActivity.this, MenuActivity.class);
+                Intent intent = new Intent(AboutAppActivity.this, MenuActivity.class);
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Intent intent = new Intent(AboutAppActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
-            MainActivity.this.finish();
+            AboutAppActivity.this.finish();
         }
     }
 

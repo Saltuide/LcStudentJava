@@ -50,8 +50,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
             ArrayList<String> arr = new ArrayList<>();
 
-            for (int i = 0; i < MainActivity.sPref.getInt("group_count", 0); i++) {
-                arr.add(MainActivity.sPref.getString("group_name" + Integer.toString(i), ""));
+            for (int i = 0; i < AboutAppActivity.sPref.getInt("group_count", 0); i++) {
+                arr.add(AboutAppActivity.sPref.getString("group_name" + Integer.toString(i), ""));
             }
 
             SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, arr);
@@ -92,7 +92,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
     /*private final Runnable mUpdateUITimerTask = new Runnable() {
         public void run() {
             count += 1;
-            int group_num = count % MainActivity.sPref.getInt("group_count", 0);
+            int group_num = count % AboutAppActivity.sPref.getInt("group_count", 0);
 
             ListView listViewGroups = (ListView) findViewById(R.id.listViewGroups);
             ArrayList<HashMap<String, String>> groupArrayList = new ArrayList<>();
@@ -100,7 +100,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
 
             map = new HashMap<>();
             map.put("Name", "Группа");
-            map.put("Value", MainActivity.sPref.getString("group_name" + Integer.toString(group_num), ""));
+            map.put("Value", AboutAppActivity.sPref.getString("group_name" + Integer.toString(group_num), ""));
             groupArrayList.add(map);
 
             SimpleAdapter adapter_group = new SimpleAdapter(PersonalAccountActivity.this, groupArrayList, android.R.layout.simple_list_item_2,

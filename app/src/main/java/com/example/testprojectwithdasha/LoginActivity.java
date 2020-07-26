@@ -1,11 +1,9 @@
 package com.example.testprojectwithdasha;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.method.PasswordTransformationMethod;
@@ -16,12 +14,14 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-
 
     public static ArrayList<Object> my_arr;
     Button btnLogin, btnRegistration, btnForgetPass;
@@ -70,11 +70,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.registration_btn:
-                Intent intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                Intent intent = new Intent(LoginActivity.this,
+                        RegistrationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btnForgetPass:
-                Intent intent1 = new Intent(LoginActivity.this, PasswordResetActivity.class);
+                Intent intent1 = new Intent(LoginActivity.this,
+                        PasswordResetActivity.class);
                 intent1.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent1);
             default:
@@ -83,35 +85,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     
-    private void Log_in() throws Exception {
+    private void Log_in(){
         if (android.os.Build.VERSION.SDK_INT > 9){
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
+                    permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-        Map<String, String> response = RequestSender.requestLogin(LoginActivity.this,
+        String response = RequestSender.requestLogin(LoginActivity.this,
                 etEmail.getText().toString(), etPassword.getText().toString());
 
-        if(response.get("status").equals("true")){
-            //Храним в настройках приложения новые данные
-            SharedPreferences.Editor ed = MainActivity.sPref.edit();
-            ed.putBoolean("status", true);
-            ed.putString("e_mail", etEmail.getText().toString());
-            ed.putBoolean("is_verificated", Boolean.parseBoolean(response.get("is_verificated")));
-            System.out.println(response.get("last_name"));
-            ed.putString("last_name", response.get("last_name"));
-            ed.putString("first_name", response.get("first_name"));
-            ed.putString("middle_name", response.get("middle_name") );
+        JSONObject answer;
+        try{
+             answer = new JSONObject(response);
+        } catch (JSONException e) {
+            Toast.makeText(this, response, Toast.LENGTH_LONG).show();
+            return;
+        }
 
-            ed.commit();
+        try{
+            if(answer.getString("status").equals("true")){
+                //Храним в настройках приложения новые данные
+                SharedPreferences.Editor ed = AboutAppActivity.sPref.edit();
+                ed.putBoolean("status", true);
+                ed.putString("e_mail", etEmail.getText().toString());
+                ed.putBoolean("is_verificated", Boolean.parseBoolean(answer.getString("is_verificated")));
+                ed.putString("last_name", answer.getString("last_name"));
+                ed.putString("first_name", answer.getString("first_name"));
+                ed.putString("middle_name", answer.getString("middle_name") );
+                ed.commit();
 
-            RequestSender.getGroupsByUser(LoginActivity.this, MainActivity.sPref.getString("e_mail", ""));
+                String getGroupAnswer = RequestSender.getGroupsByUser(LoginActivity.this,
+                        AboutAppActivity.sPref.getString("e_mail", ""));
 
-            Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
-            startActivity(intent);
-            LoginActivity.this.finish();
-        }else{
-            Toast toast = Toast.makeText(this, response.get("comment"),Toast.LENGTH_LONG);
-            toast.show();
+                if (!getGroupAnswer.equals("Все ок")){
+                    Toast.makeText(this, "Не удалось получить информацию о группах",
+                            Toast.LENGTH_LONG).show();
+                }
+
+                Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                startActivity(intent);
+                LoginActivity.this.finish();
+            }else{
+                Toast toast = Toast.makeText(this, answer.getString("comment"),Toast.LENGTH_LONG);
+                toast.show();
+            }
+        } catch (JSONException e) {
+            Toast.makeText(this, "Неизвестная ошибка при считывании ответа",
+                    Toast.LENGTH_LONG).show();
         }
 
     }

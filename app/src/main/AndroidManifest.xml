@@ -36,7 +36,7 @@
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SecondActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".AboutAppActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

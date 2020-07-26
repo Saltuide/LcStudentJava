@@ -16,7 +16,6 @@ import com.example.testprojectwithdasha.adapters.MenuAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Timer;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,7 +48,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         buttons = (ListView)findViewById(R.id.buttons);
         final Button btn = (Button)findViewById(R.id.btn);
 
-        if (MainActivity.sPref.getBoolean("is_verificated", false)) {
+        if (AboutAppActivity.sPref.getBoolean("is_verificated", false)) {
             ArrayList<String> att = new ArrayList<>();
             att.addAll(Arrays.asList(getResources().getStringArray(R.array.menu_button_verificated)));
             adapter = new MenuAdapter(this, att);
@@ -64,7 +63,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         buttons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (MainActivity.sPref.getBoolean("is_verificated", false)) {
+                if (AboutAppActivity.sPref.getBoolean("is_verificated", false)) {
                     if (position == 0) {
                         Intent intent = new Intent(MenuActivity.this, PersonalAccountActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

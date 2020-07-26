@@ -28,8 +28,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -188,9 +186,7 @@ public class NewsActivity extends AppCompatActivity{
                     continue;
                 }
                 try {
-//                        InputStream in = new java.net.URL(mainImageUrl).openStream();
-//                        mainImage = BitmapFactory.decodeStream(in);
-//                        in.close();
+
                     FutureTarget<Bitmap> futureTarget =
                             Glide.with(NewsActivity.this)
                                     .asBitmap()
@@ -198,7 +194,6 @@ public class NewsActivity extends AppCompatActivity{
                                     .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
 
                     mainImage = futureTarget.get();
-                    //Glide.with(NewsActivity.this).clear(futureTarget);
                 } catch (InterruptedException e) {
                     mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
                             R.drawable.error_pic);
@@ -229,10 +224,6 @@ public class NewsActivity extends AppCompatActivity{
                         public void onItemClick(View view, int position) {
                             NewsImgGalleryThread secondThread = new NewsImgGalleryThread();
                             secondThread.execute(position);
-//                            RecyclerView newsActivityView = findViewById(R.id.list);
-
-
-
                         }
 
                         @Override
@@ -271,8 +262,6 @@ public class NewsActivity extends AppCompatActivity{
                 //Bitmap image;
                 try {
                     link = otherImages.getString(j);
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    System.out.println(link);
                     FutureTarget<Bitmap> futureTarget =
                             Glide.with(NewsActivity.this)
                                     .asBitmap()

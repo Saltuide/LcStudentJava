@@ -3,9 +3,6 @@ package com.example.testprojectwithdasha;
 import android.app.Activity;
 
 import android.content.SharedPreferences;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -83,103 +79,80 @@ public class RequestSender {
 
     }
 
-    public static Map<String, String> requestLogin(Activity context, String login,
-                                                   String password) throws Exception{
+    public static String requestLogin(Activity context, String login,
+                                                   String password) {
         JSONObject body = new JSONObject();
+        String validLogin;
+        try{
+             validLogin = new String(login.getBytes("UTF-8"), "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            return "Логин содержит некорректные символы";
+        }
 
-        String newString = new String(login.getBytes("UTF-8"), "ISO-8859-1");
-
-        body.put("email", newString);
-        body.put("password", password);
+        try {
+            body.put("email", validLogin);
+            body.put("password", password);
+        } catch (JSONException e) {
+            return "that's not suppose to ever happen";
+        }
 
         String stringBody = body.toString();
         String loginLink =  context.getResources().getString(R.string.login_link);
         String postRequest = context.getResources().getString(R.string.post_request);
-        System.out.println(stringBody);
         //посылаем запрос на сервер и получаем ответ в response
         String response = requestSender(loginLink, stringBody, postRequest);
-        //преобработка ответа (убираем крайние кавычки)
-        response = response.replace("\"", "");
 
-        Properties props = new Properties();
-        try {
-            props.load(new StringReader(response.substring(1, response.length() - 1).replace(
-                    ", ", "\n")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Map<String, String> parsedJSON = new HashMap<String, String>();
-        //собираем JSON
-        for (Map.Entry<Object, Object> e : props.entrySet()) {
-            parsedJSON.put((String)e.getKey(), (String)e.getValue());
-        }
 
-        return parsedJSON;
+        return response;
     }
 
-    public static Map<String, String> requestRegistration(Activity context, String login,
-                                                          String password) throws Exception {
+    public static String requestRegistration(Activity context, String login,
+                                                          String password){
         JSONObject body = new JSONObject();
-        body.put("email", login);
-        body.put("password", password);
+        try {
+            body.put("email", login);
+            body.put("password", password);
+        } catch (JSONException e) {
+            return "that's not suppose to ever happen";
+        }
 
         String stringBody = body.toString();
         String regLink =  context.getResources().getString(R.string.reg_link);
         String postRequest = context.getResources().getString(R.string.post_request);
         //посылаем запрос на сервер и получаем ответ в response
         String response = requestSender(regLink, stringBody, postRequest);
-        //преобработка ответа (убираем крайние кавычки)
-        response = response.replace("\"", "");
 
-        Properties props = new Properties();
-        try {
-            props.load(new StringReader(response.substring(1, response.length() - 1).replace(
-                    ", ", "\n")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Map<String, String> parsedJSON = new HashMap<String, String>();
-        //собираем JSON
-        for (Map.Entry<Object, Object> e : props.entrySet()) {
-            parsedJSON.put((String)e.getKey(), (String)e.getValue());
-        }
-
-        return parsedJSON;
+        return response;
     }
 
-    public static Map<String, String> sRequestResetPassword(Activity context, String email)
-            throws Exception{
+    public static String sRequestResetPassword(Activity context, String email) {
         JSONObject body = new JSONObject();
-        body.put("email", email);
+
+        try {
+            body.put("email", email);
+        } catch (JSONException e) {
+            return "that's not suppose to ever happen";
+        }
 
         String stringBody = body.toString();
         String loginLink =  context.getResources().getString(R.string.reset_password_link);
         String postRequest = context.getResources().getString(R.string.post_request);
         //посылаем запрос на сервер и получаем ответ в response
         String response = requestSender(loginLink, stringBody, postRequest);
-        //преобработка ответа (убираем крайние кавычки)
-        response = response.replace("\"", "");
 
-        Properties props = new Properties();
-        try {
-            props.load(new StringReader(response.substring(1, response.length() - 1).replace(
-                    ", ", "\n")));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Map<String, String> parsedJSON = new HashMap<String, String>();
-        //собираем JSON
-        for (Map.Entry<Object, Object> e : props.entrySet()) {
-            parsedJSON.put((String)e.getKey(), (String)e.getValue());
-        }
-        return parsedJSON;
+        return response;
     }
     
-    public static void getGroupsByUser (Activity context, String email) throws Exception{
+    public static String  getGroupsByUser (Activity context, String email){
         //email ="admin";
-        SharedPreferences.Editor ed = MainActivity.sPref.edit();
+        SharedPreferences.Editor ed = AboutAppActivity.sPref.edit();
         JSONObject body = new JSONObject();
-        body.put("email", email);
+        try{
+            body.put("email", email);
+        } catch (JSONException e) {
+            return "Переменная не положилась в json _-_";
+
+        }
 
         String stringBody = body.toString();
         String loginLink =  context.getResources().getString(R.string.getGroupsByUser_link);
@@ -187,18 +160,35 @@ public class RequestSender {
         //посылаем запрос на сервер и получаем ответ в response
         String response = requestSender(loginLink, stringBody, postRequest);
 
-        JSONObject objJson = new JSONObject(response);
+        JSONObject objJson;
+        try {
+            objJson = new JSONObject(response);
+        } catch (JSONException e) {
+            return "Не удалось преобразовать json";
+        }
 
-        //if (objJson.getBoolean("status")) {
-        JSONArray featuresArr = objJson.getJSONArray("answer");
+        JSONArray featuresArr;
+        try {
+            featuresArr = objJson.getJSONArray("answer");
+        } catch (JSONException e) {
+            return "Не удалось получить ответ";
+        }
         ed.putInt("group_count", featuresArr.length());
 
+        Boolean check = true;
         for (int i = 0; i < featuresArr.length(); i++) {
-            ed.putString("group_name" + Integer.toString(i), featuresArr.getJSONObject(i).getString("group_name"));
-            ed.putString("degree_program"+ Integer.toString(i), featuresArr.getJSONObject(i).getString("degree_program"));
-            ed.putString("faculty_name"+ Integer.toString(i), featuresArr.getJSONObject(i).getString("faculty_name"));
-            ed.commit();
+            try {
+                ed.putString("group_name" + i, featuresArr.getJSONObject(i).getString("group_name"));
+                ed.putString("degree_program" + i, featuresArr.getJSONObject(i).getString("degree_program"));
+                ed.putString("faculty_name" + i, featuresArr.getJSONObject(i).getString("faculty_name"));
+                ed.commit();
+            } catch (JSONException e) {
+                check = false;
+            }
         }
+        if(check)
+            return "Все ок";
+        return "Инфа о какой-то группе не добавилась";
     }
 
     public static String getNews(Activity context, String type, String year, String month,

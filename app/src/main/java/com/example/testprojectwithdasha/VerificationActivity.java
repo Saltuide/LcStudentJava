@@ -4,13 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.sql.SQLOutput;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Timer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +54,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
         year = findViewById(R.id.etYearVerif);
         passport = findViewById(R.id.etPassportVerif);
 
-        email_ =  MainActivity.sPref.getString("e_mail", "");
+        email_ =  AboutAppActivity.sPref.getString("e_mail", "");
         email.setText(email_);
         email.setInputType(InputType.TYPE_NULL); // readonly
 
@@ -178,7 +172,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                     comment = jsonObject.getString("comment");
                     return null;
                 }
-                SharedPreferences.Editor ed = MainActivity.sPref.edit();
+                SharedPreferences.Editor ed = AboutAppActivity.sPref.edit();
                 ed.putBoolean("is_verificated", true);
                 ed.putString("last_name", jsonObject.getString("last_name"));
                 ed.putString("first_name", jsonObject.getString("first_name"));

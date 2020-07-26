@@ -7,10 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.view.MotionEvent;
-import android.annotation.SuppressLint;
 
 import com.example.testprojectwithdasha.adapters.MenuAdapter;
 
@@ -41,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 //Кнопка выхода
                 if (position == 2) {
-                    SharedPreferences.Editor ed = MainActivity.sPref.edit();
+                    SharedPreferences.Editor ed = AboutAppActivity.sPref.edit();
                     ed.putBoolean("status", false);
                     ed.putString("e_mail", "");
                     ed.putBoolean("is_verificated", false);
@@ -60,7 +57,8 @@ public class SettingsActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }else if (position == 1) {
-                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SettingsActivity.this, AboutAppActivity.class);
+                    intent.putExtra("prevActivity", "settings");
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 };
