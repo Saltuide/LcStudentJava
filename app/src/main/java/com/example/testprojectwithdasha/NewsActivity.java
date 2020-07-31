@@ -196,7 +196,6 @@ public class NewsActivity extends AppCompatActivity{
                     mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
                             R.drawable.error_pic);
                 }
-
                     news.add(new News(title, tag, pubDate, description, mainImage, fullText, otherImages));
                 }
 

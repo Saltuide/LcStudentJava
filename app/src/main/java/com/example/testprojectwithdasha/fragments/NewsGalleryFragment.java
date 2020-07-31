@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.testprojectwithdasha.R;
@@ -27,6 +28,7 @@ public class NewsGalleryFragment extends DialogFragment {
     private int selectedPosition = 0;
     private List<Bitmap> allImagesForGallery;
     private TextView counter;
+    private LinearLayout counterLayout;
 
 
     public NewsGalleryFragment() {
@@ -55,6 +57,7 @@ public class NewsGalleryFragment extends DialogFragment {
         View v = inflater.inflate(R.layout.fragment_news_gallery, container, false);
         viewPager = v.findViewById(R.id.viewpager);
         counter = v.findViewById(R.id.tvPicNumNewsGal);
+        counterLayout = v.findViewById(R.id.llCounterLayout);
         myViewPagerAdapter = new MyViewPagerAdapter();
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
@@ -132,10 +135,10 @@ public class NewsGalleryFragment extends DialogFragment {
             photoView.setOnClickListener(new PhotoView.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (counter.getVisibility() == View.INVISIBLE){
-                        counter.setVisibility(View.VISIBLE);
+                    if (counterLayout.getVisibility() == View.INVISIBLE){
+                        counterLayout.setVisibility(View.VISIBLE);
                     }else{
-                        counter.setVisibility(View.INVISIBLE);
+                        counterLayout.setVisibility(View.INVISIBLE);
                     }
 
                 }

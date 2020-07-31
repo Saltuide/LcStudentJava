@@ -89,7 +89,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                     checker = false;
                     tmp.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rectangle));
                 }else{
-                    tmp.setBackground(ContextCompat.getDrawable(this, R.color.help_back));
+                    tmp.setBackground(ContextCompat.getDrawable(this, R.drawable.input_field));
                 }
             }
         }
