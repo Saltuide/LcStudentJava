@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +27,7 @@ import com.example.testprojectwithdasha.adapters.NewsAdapter;
 import com.example.testprojectwithdasha.classes.News;
 import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
 import com.example.testprojectwithdasha.fragments.NewsFragment;
+import com.google.android.material.appbar.AppBarLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +41,7 @@ import java.util.concurrent.ExecutionException;
 public class NewsActivity extends AppCompatActivity{
 
     List<News> news = new ArrayList<>();
+    private Menu menu;
     SetData setData;
     private Button navigGoToRasp;
     private Button navigGoToNews;
@@ -49,8 +54,67 @@ public class NewsActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
+        final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int scrollRange = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (scrollRange == -1) {
+                    scrollRange = appBarLayout.getTotalScrollRange();
+                }
+                if (scrollRange + verticalOffset == 0) {
+//                    isShow = true;
+//                    showOption(R.id.action_info);
+                } else if (isShow) {
+//                    isShow = false;
+//                    hideOption(R.id.action_info);
+                }
+            }
+        });
+
         setData = new SetData();
         setData.execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
+        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+//        hideOption(R.id.action_info);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        } else if (id == R.id.action_info) {
+//            return true;
+//        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void hideOption(int id) {
+//        MenuItem item = menu.findItem(id);
+//        item.setVisible(false);
+    }
+
+    private void showOption(int id) {
+//        MenuItem item = menu.findItem(id);
+//        item.setVisible(true);
     }
 
     @Override
@@ -66,6 +130,8 @@ public class NewsActivity extends AppCompatActivity{
             //делает меню обратно видимым
             ConstraintLayout newsNavigLayout = findViewById(R.id.navigBtnContainerNews);
             newsNavigLayout.setVisibility(View.VISIBLE);
+            AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+            appBarLayout.setVisibility(View.VISIBLE);
         }else {
             super.onBackPressed();
         }
@@ -133,7 +199,6 @@ public class NewsActivity extends AppCompatActivity{
             Bitmap mainImage;
             JSONArray otherImages;
             String fullText;
-
 
             String tmp = RequestSender.getNews(NewsActivity.this, "default",
                         "all", "all", "all", 1);
@@ -217,6 +282,8 @@ public class NewsActivity extends AppCompatActivity{
                         @Override
                         public void onItemClick(View view, int position) {
                             NewsImgGalleryThread secondThread = new NewsImgGalleryThread();
+                            AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+                            appBarLayout.setVisibility(View.INVISIBLE);
                             secondThread.execute(position);
                         }
 
