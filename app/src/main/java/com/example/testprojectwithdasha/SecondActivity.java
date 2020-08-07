@@ -1,93 +1,98 @@
 package com.example.testprojectwithdasha;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.Spinner;
+//import android.widget.SpinnerAdapter;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.example.testprojectwithdasha.R;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-public class SecondActivity extends AppCompatActivity {
+import com.example.testprojectwithdasha.adapters.SpinnerSelectorAdapter;
+import com.example.testprojectwithdasha.classes.SelectorsModel;
+import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
 
 
-    private Menu menu;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+//Пусть эта хрень будет для экспериментов
+public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private RecyclerView mRecyclerView;
+    private SpinnerSelectorAdapter selectorAdapter;
+    List<SelectorsModel> mModelList;
+    Spinner spinner, spinner1;
+    private SpinnerAdapter spinnerAdapter;
+    Button btn;
+    int count;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
-        final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
-        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
+        //mRecyclerView = (RecyclerView)findViewById(R.id.recyclerView_selector);
+        //mRecyclerView.setVisibility(View.GONE);
 
+        spinner = (Spinner)findViewById(R.id.spinner);
+        spinner1 = findViewById(R.id.spinner2);
+
+        spinnerAdapter = new SpinnerAdapter(this, getList());
+        spinner1.setAdapter(spinnerAdapter);
+
+        selectorAdapter = new SpinnerSelectorAdapter(this, getListData());
+        LinearLayoutManager manager = new LinearLayoutManager(SecondActivity.this);
+        //mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setLayoutManager(manager);
+        //mRecyclerView.setAdapter(selectorAdapter);
+        spinner.setAdapter(selectorAdapter);
+
+        //selectorAdapter.
+
+        btn = (Button)findViewById(R.id.button);
+
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    isShow = true;
-//                    showOption(R.id.action_info);
-                } else if (isShow) {
-                    isShow = false;
-//                    hideOption(R.id.action_info);
+            public void onClick(View v) {
+                ArrayList<SelectorsModel> model = selectorAdapter.getModel();
+                for (int i = 0; i < model.size(); i++) {
+                    System.out.println(model.get(i).isSelected());
                 }
             }
         });
+
+
     }
+
+    private ArrayList<SelectorsModel> getListData() {
+        mModelList = new ArrayList<>();
+        ArrayList<String> att = new ArrayList<>();
+        att.addAll(Arrays.asList(getResources().getStringArray(R.array.months)));
+        for (int i = 0; i <= 12; i++) {
+            mModelList.add(new SelectorsModel(att.get(i)));
+        }
+        return (ArrayList<SelectorsModel>) mModelList;
+    }
+
+    private ArrayList<String> getList() {
+            ArrayList<String> att = new ArrayList<>();
+            att.addAll(Arrays.asList(getResources().getStringArray(R.array.months)));
+            return att;
+        }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.menu = menu;
-        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
-//        hideOption(R.id.action_info);
-        return true;
-    }
+    public void onClick(View v) {
+        FragmentManager f = getSupportFragmentManager();
+//        BlankFragment b = BlankFragment.newInstance();
+//        b.show(f, "kappa");
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        } else if (id == R.id.action_info) {
-//            return true;
-//        }
-//
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void hideOption(int id) {
-//        MenuItem item = menu.findItem(id);
-//        item.setVisible(false);
-    }
-
-    private void showOption(int id) {
-//        MenuItem item = menu.findItem(id);
-//        item.setVisible(true);
     }
 }

@@ -43,7 +43,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         listView.setAdapter(adapter);
 
         if (groupArrayList.size() > 1){
-            GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this, groupArrayList.get(0));
+            GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this,
+                    groupArrayList.get(0));
             listViewGroups.setAdapter(adapter_group);
 
             name_text.setText("Группа");
@@ -51,7 +52,7 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
             ArrayList<String> arr = new ArrayList<>();
 
             for (int i = 0; i < AboutAppActivity.sPref.getInt("group_count", 0); i++) {
-                arr.add(AboutAppActivity.sPref.getString("group_name" + Integer.toString(i), ""));
+                arr.add(AboutAppActivity.sPref.getString("group_name" + i, ""));
             }
 
             SpinnerAdapter spinnerAdapter = new SpinnerAdapter(this, arr);
@@ -61,7 +62,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
             value_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    GroupsAdapter adapter_group = new GroupsAdapter(PersonalAccountActivity.this, groupArrayList.get(position));
+                    GroupsAdapter adapter_group = new GroupsAdapter(
+                            PersonalAccountActivity.this, groupArrayList.get(position));
                     listViewGroups.setAdapter(adapter_group);
                 }
 
@@ -75,7 +77,8 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
         } else if (groupArrayList.size() == 1) {
             value_spinner.setVisibility(View.GONE);
             name_text.setVisibility(View.GONE);
-            PersonalAccountAdapter adapter_group = new PersonalAccountAdapter(this, groupArrayList.get(0));
+            //PersonalAccountAdapter adapter_group = new PersonalAccountAdapter(this,
+            //        groupArrayList.get(0));
 
             arrayList.addAll(groupArrayList.get(0));
             adapter = new PersonalAccountAdapter(this, arrayList);
@@ -116,7 +119,5 @@ public class PersonalAccountActivity<CustomerDataSource> extends AppCompatActivi
     };
     private final Handler mHandler = new Handler();*/
 
-    private void setAdapter(ArrayList<HashMap<String, String>> settingList,ArrayList<ArrayList<HashMap<String, String>>> GroupList, int my_position){
 
-    }
 }
