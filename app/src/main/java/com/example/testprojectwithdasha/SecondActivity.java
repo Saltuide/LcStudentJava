@@ -23,13 +23,12 @@ import java.util.List;
 //Пусть эта хрень будет для экспериментов
 public class SecondActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private RecyclerView mRecyclerView;
+
     private SpinnerSelectorAdapter selectorAdapter;
     List<SelectorsModel> mModelList;
     Spinner spinner, spinner1;
     private SpinnerAdapter spinnerAdapter;
     Button btn;
-    int count;
 
 
     @Override

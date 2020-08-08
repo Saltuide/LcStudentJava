@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -193,12 +194,26 @@ public class RequestSender {
 
     public static String getNews(Activity context, String type, String year, String month,
                                  String tag, int page){
+        String yearStr = "";
+        String monthStr = "";
+        String tagStr = "";
         JSONObject jsonObject = new JSONObject();
+        ArrayList<String> yearr = new ArrayList<String>();
+        yearr.add("2019");
+        yearr.add("2020");
         try{
-            if(type == "default") jsonObject.put("type", type);
+            if(type == "defaultt") jsonObject.put("type", type);
+//            else{
+//                if(year.length != 0){
+//                    for(int i = 0; i < year.length; i++){
+//                        yearStr += year[i] + ",";
+//                    }
+//                } else{
+//                    yearStr = "all";
+//                }
             else{
-                jsonObject.put("type", type);
-                jsonObject.put("year", year);
+                jsonObject.put("type", type="custom");
+                jsonObject.put("year", yearr);
                 jsonObject.put("month", month);
                 jsonObject.put("tag", tag);
                 jsonObject.put("current_page", page);

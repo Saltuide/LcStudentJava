@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +20,18 @@ import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
+import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
+import com.example.testprojectwithdasha.adapters.SpinnerSelectorAdapter;
 import com.example.testprojectwithdasha.classes.News;
 import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
+import com.example.testprojectwithdasha.classes.SelectorsModel;
 import com.example.testprojectwithdasha.fragments.NewsFragment;
 import com.google.android.material.appbar.AppBarLayout;
 
@@ -34,6 +40,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -47,6 +55,21 @@ public class NewsActivity extends AppCompatActivity{
     private Button navigGoToNews;
     private Button navigGoToMenu;
     private NewsFragment currentNews;
+
+    private RecyclerView mRecyclerView;
+    private SpinnerSelectorAdapter yearSelectorAdapter, monthSelectorAdapter, tagSelectorAdapter;
+    List<SelectorsModel> mModelList;
+    Spinner monthsSpinner;
+    Spinner yearSpinner;
+    Spinner tagsSpinner;
+
+    Button btn;
+    int count;
+
+    Calendar calendar;
+    int currentYear;
+
+
 
 
     @Override
@@ -77,8 +100,48 @@ public class NewsActivity extends AppCompatActivity{
             }
         });
 
+
+        calendar = Calendar.getInstance();
+        currentYear = calendar.get(Calendar.YEAR);
+        yearSpinner = (Spinner)findViewById(R.id.yearFilterSpinner);
+        yearSelectorAdapter = new SpinnerSelectorAdapter(this, getListData("months"));
+        yearSpinner.setAdapter(yearSelectorAdapter);
+
+        monthsSpinner = (Spinner)findViewById(R.id.monthFilterSpinner);
+        monthSelectorAdapter = new SpinnerSelectorAdapter(this, getListData("years"));
+        monthsSpinner.setAdapter(monthSelectorAdapter);
+
+        tagsSpinner = (Spinner)findViewById(R.id.tagFilterSpinner);
+        tagSelectorAdapter = new SpinnerSelectorAdapter(this, getListData("tags"));
+        tagsSpinner.setAdapter(tagSelectorAdapter);
+
+
+
         setData = new SetData();
         setData.execute();
+    }
+
+    // 0-год 1-месяц 2-тег
+    private ArrayList<SelectorsModel> getListData(String type) {
+        mModelList = new ArrayList<>();
+        ArrayList<String> att = new ArrayList<>();
+        switch (type){
+            case "years":
+                att.add("Год");
+                for(int i = 2016; i <= currentYear; i++){
+                    att.add(String.valueOf(i));
+                };
+                break;
+
+            case "months":
+                att.addAll(Arrays.asList(getResources().getStringArray(R.array.months)));
+                break;
+            case "tags": ;
+        }
+        for (int i = 0; i < att.size(); i++) {
+            mModelList.add(new SelectorsModel(att.get(i)));
+        };
+        return (ArrayList<SelectorsModel>) mModelList;
     }
 
     @Override
@@ -140,11 +203,43 @@ public class NewsActivity extends AppCompatActivity{
     class SetData extends AsyncTask<Void, Void, Void>{
 
         private String errorMessage = "";
+        private ArrayList<String> monthTags = new ArrayList<String>();//1-12
+        private ArrayList<String> yearTags = new ArrayList<String>(); //2016-...
+        private ArrayList<String> newsTags = new ArrayList<String>(); //"someString"
 
 
         @SuppressLint("ClickableViewAccessibility")
         protected void onPreExecute(){
             super.onPreExecute();
+
+            btn = (Button)findViewById(R.id.filterButton);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<SelectorsModel> monthModel = monthSelectorAdapter.getModel();
+                    ArrayList<SelectorsModel> yearModel = yearSelectorAdapter.getModel();
+                    //ArrayList<SelectorsModel> tagsModel = tagsSelectorAdapter.getModel();
+                    monthTags.clear();
+                    yearTags.clear();
+                    newsTags.clear();
+                    for (int i = 0; i < monthModel.size(); i++) {
+                        if(monthModel.get(i).isSelected()){
+                            System.out.println(monthModel.get(i).getText());
+                            monthTags.add(String.valueOf(i));
+                        }
+                    }
+                    for (int i = 0; i < yearModel.size(); i++) {
+                        if(yearModel.get(i).isSelected()){
+                            System.out.println(yearModel.get(i).getText());
+                            yearTags.add(yearModel.get(i).getText());
+                        }
+                    }
+                    // TODO: 09.08.2020 // add tags filler
+                    doInBackground();
+                }
+            });
+
+
             navigGoToRasp = (Button) findViewById(R.id.goto_rasp);
             navigGoToRasp.setOnTouchListener(new View.OnTouchListener() {
                 @SuppressLint("ClickableViewAccessibility")
@@ -199,10 +294,15 @@ public class NewsActivity extends AppCompatActivity{
             Bitmap mainImage;
             JSONArray otherImages;
             String fullText;
+            String type = "custom";
+
 
             String tmp = RequestSender.getNews(NewsActivity.this, "default",
                         "all", "all", "all", 1);
+
             JSONObject answer;
+            // TODO: 09.08.2020 \ // fill the tags list
+
 
             try {
                 answer = new JSONObject(tmp);
