@@ -1,27 +1,29 @@
 package com.example.testprojectwithdasha;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.testprojectwithdasha.classes.MyOnFocusChangeListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     public static ArrayList<Object> my_arr;
     Button btnLogin, btnRegistration, btnForgetPass;
@@ -33,17 +35,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-
-        btnLogin = (Button) findViewById(R.id.log_in);
+        btnLogin = findViewById(R.id.log_in);
         btnLogin.setOnClickListener(this);
-        btnRegistration = (Button) findViewById(R.id.registration_btn);
+        btnRegistration = findViewById(R.id.registration_btn);
         btnRegistration.setOnClickListener(this);
-        etEmail = (EditText) findViewById(R.id.e_mail_in);
-        etPassword = (EditText) findViewById(R.id.password_in);
-        btnForgetPass = (Button) findViewById(R.id.btnForgetPass);
+        etEmail = findViewById(R.id.e_mail_in);
+        etPassword = findViewById(R.id.password_in);
+        btnForgetPass = findViewById(R.id.btnForgetPass);
         btnForgetPass.setOnClickListener(this);
 
-        checkBox = (CheckBox) findViewById(R.id.checkpass);
+        etEmail.setOnFocusChangeListener(new MyOnFocusChangeListener(etEmail));
+        etPassword.setOnFocusChangeListener(new MyOnFocusChangeListener(etPassword));
+
+        checkBox = findViewById(R.id.checkpass);
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -58,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    
     @Override
     public void onClick(View v) {
         switch (v.getId()){

@@ -128,9 +128,9 @@ public class NewsActivity extends AppCompatActivity{
         switch (type){
             case "years":
                 att.add("Год");
-                for(int i = 2016; i <= currentYear; i++){
+                for(int i = 2015; i <= currentYear; i++){
                     att.add(String.valueOf(i));
-                };
+                }
                 break;
 
             case "months":
@@ -204,7 +204,7 @@ public class NewsActivity extends AppCompatActivity{
 
         private String errorMessage = "";
         private ArrayList<String> monthTags = new ArrayList<String>();//1-12
-        private ArrayList<String> yearTags = new ArrayList<String>(); //2016-...
+        private ArrayList<String> yearTags = new ArrayList<String>(); //2015-...
         private ArrayList<String> newsTags = new ArrayList<String>(); //"someString"
 
 

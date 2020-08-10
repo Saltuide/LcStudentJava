@@ -11,9 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.testprojectwithdasha.classes.MyOnFocusChangeListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText e_mail, password, repeat_password;
@@ -24,16 +25,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registation);
 
-        e_mail = (EditText)findViewById(R.id.e_mail_reg);
-        password = (EditText)findViewById(R.id.password_reg);
-        repeat_password = (EditText)findViewById(R.id.repeat_password_reg);
+        e_mail = findViewById(R.id.e_mail_reg);
+        password = findViewById(R.id.password_reg);
+        repeat_password = findViewById(R.id.repeat_password_reg);
 
-        registration = (Button)findViewById(R.id.registration);
+        registration = findViewById(R.id.registration);
         registration.setOnClickListener(this);
-        log_in = (Button)findViewById(R.id.log_in_btn);
+        log_in = findViewById(R.id.log_in_btn);
         log_in.setOnClickListener(this);
-    }
 
+        e_mail.setOnFocusChangeListener(new MyOnFocusChangeListener(e_mail));
+        password.setOnFocusChangeListener(new MyOnFocusChangeListener(password));
+        repeat_password.setOnFocusChangeListener(new MyOnFocusChangeListener(repeat_password));
+    }
     
     @Override
     public void onClick(View v) {
@@ -64,11 +68,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     
     private void registration() {
-        if (android.os.Build.VERSION.SDK_INT > 9){
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
-                    permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().
+                permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
 
         String response = RequestSender.requestRegistration(RegistrationActivity.this,
                 e_mail.getText().toString(), password.getText().toString());

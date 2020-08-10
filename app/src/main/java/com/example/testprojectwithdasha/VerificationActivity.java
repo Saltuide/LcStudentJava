@@ -1,9 +1,5 @@
 package com.example.testprojectwithdasha;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,11 +10,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+
+import com.example.testprojectwithdasha.classes.MyOnFocusChangeListener;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +37,6 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
             "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     protected String email_, passport_, finalName, finalSurname, finalBatyaName, birthday_;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +59,28 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
 
         email_ =  AboutAppActivity.sPref.getString("e_mail", "");
         email.setText(email_);
-        email.setInputType(InputType.TYPE_NULL); // readonly
+        email.setKeyListener(null); // readonly
 
+        surname.setOnFocusChangeListener(new MyOnFocusChangeListener(surname));
+        name.setOnFocusChangeListener(new MyOnFocusChangeListener(name));
+        batyaName.setOnFocusChangeListener(new MyOnFocusChangeListener(batyaName));
+        day.setOnFocusChangeListener(new MyOnFocusChangeListener(day));
+        month.setOnFocusChangeListener(new MyOnFocusChangeListener(month));
+        year.setOnFocusChangeListener(new MyOnFocusChangeListener(year));
+        passport.setOnFocusChangeListener(new MyOnFocusChangeListener(passport));
+
+        surname.requestFocus(); // фокус на фамилию, иначе он улетает хер пойми куда
     }
 
     private boolean isDateValid(String day, String month, String year){
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        if (Integer.parseInt(year) > currentYear){
+            Toast.makeText(this, "Возвращайся назад в будущее, хороший фильм к слову",
+                    Toast.LENGTH_LONG).show();
+            return false;
+        }
+        // если год больше текущего то возвращается два тоста
         SimpleDateFormat myFormat = new SimpleDateFormat("dd.MM.yyyy");
         String date = day + "." + month + "." + year;
         myFormat.setLenient(false);
@@ -81,6 +101,7 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
 
     private boolean emptyFields(){
         boolean checker = true;
+        email.requestFocus();
         for (int i = 0; i < mainLayout.getChildCount(); i++){
             if (mainLayout.getChildAt(i) instanceof EditText){
                 EditText tmp = (EditText) mainLayout.getChildAt(i);
@@ -98,16 +119,8 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
 
     private String validateFields(String s, EditText et){
         String validS;
-        try{
-            validS = new String (s.getBytes("UTF-8"), "ISO-8859-1");
-            et.setBackground(ContextCompat.getDrawable(this, R.color.help_back));
-        } catch (UnsupportedEncodingException e) {
-            Toast toast = Toast.makeText(this, "Вы ввели некорректные символы",
-                    Toast.LENGTH_LONG);
-            toast.show();
-            et.setBackground(ContextCompat.getDrawable(this, R.drawable.red_rectangle));
-            return "";
-        }
+        validS = new String (s.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        et.setBackground(ContextCompat.getDrawable(this, R.drawable.input_field));
         return validS;
     }
 
@@ -199,13 +212,12 @@ public class VerificationActivity extends AppCompatActivity implements View.OnCl
                 Toast toast = Toast.makeText(VerificationActivity.this,
                         "Не удалось установить соединение с сервером", Toast.LENGTH_LONG);
                 toast.show();
+                return;
             }
             Intent intent = new Intent(VerificationActivity.this, MenuActivity.class);
             intent.putExtra("activity", "verification");
             startActivity(intent);
             VerificationActivity.this.finish();
-
-            return;
         }
     }
 
