@@ -202,7 +202,8 @@ public class RequestSender {
 //        year.add("2019");
 //        year.add("2020");
         try{// TODO: 13.08.2020 fix costyl
-            if(type == "defaultt"){
+            if(type == "default"){
+                System.out.println("here");
                 jsonObject.put("type", type);
             }else{
                 type = "custom";
@@ -230,15 +231,16 @@ public class RequestSender {
                     tagArrayToStr = "all";
                 }
 
-                jsonObject.put("type", type);
-                jsonObject.put("year", yearArrayToStr);
-                jsonObject.put("month", monthArrayToStr);
-                jsonObject.put("tag", tagArrayToStr);
-                jsonObject.put("current_page", page);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        jsonObject.put("type", type);
+        jsonObject.put("year", yearArrayToStr);
+        jsonObject.put("month", monthArrayToStr);
+        jsonObject.put("tag", tagArrayToStr);
+        jsonObject.put("current_page", page);
+        
         System.out.println("список годов выглядит так: " + jsonObject.get("year"));
         String stringBody = jsonObject.toString();
         String newsLink =  context.getResources().getString(R.string.get_news);
