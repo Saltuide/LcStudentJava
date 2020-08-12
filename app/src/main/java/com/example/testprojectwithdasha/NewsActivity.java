@@ -48,28 +48,17 @@ import java.util.concurrent.ExecutionException;
 
 public class NewsActivity extends AppCompatActivity{
 
-    List<News> news = new ArrayList<>();
+    private List<News> news = new ArrayList<>();
     private Menu menu;
-    SetData setData;
-    private Button navigGoToRasp;
-    private Button navigGoToNews;
-    private Button navigGoToMenu;
+    private SetData setData;
+    private Button navigGoToRasp, navigGoToNews, navigGoToMenu, btn;
     private NewsFragment currentNews;
-
     private RecyclerView mRecyclerView;
     private SpinnerSelectorAdapter yearSelectorAdapter, monthSelectorAdapter, tagSelectorAdapter;
-    List<SelectorsModel> mModelList;
-    Spinner monthsSpinner;
-    Spinner yearSpinner;
-    Spinner tagsSpinner;
-
-    Button btn;
-    int count;
-
-    Calendar calendar;
-    int currentYear;
-
-
+    private List<SelectorsModel> mModelList;
+    private Spinner monthsSpinner, yearSpinner, tagsSpinner;
+    private int filterUsageCounter, currentYear;
+    private Calendar calendar;
 
 
     @Override
@@ -79,8 +68,8 @@ public class NewsActivity extends AppCompatActivity{
 
         final Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
 
+        AppBarLayout mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
             int scrollRange = -1;
@@ -121,7 +110,6 @@ public class NewsActivity extends AppCompatActivity{
         setData.execute();
     }
 
-    // 0-год 1-месяц 2-тег
     private ArrayList<SelectorsModel> getListData(String type) {
         mModelList = new ArrayList<>();
         ArrayList<String> att = new ArrayList<>();
@@ -136,7 +124,9 @@ public class NewsActivity extends AppCompatActivity{
             case "months":
                 att.addAll(Arrays.asList(getResources().getStringArray(R.array.months)));
                 break;
-            case "tags": ;
+            case "tags":
+                att.add("Тег");
+                break;
         }
         for (int i = 0; i < att.size(); i++) {
             mModelList.add(new SelectorsModel(att.get(i)));
@@ -205,7 +195,7 @@ public class NewsActivity extends AppCompatActivity{
         private String errorMessage = "";
         private ArrayList<String> monthTags = new ArrayList<String>();//1-12
         private ArrayList<String> yearTags = new ArrayList<String>(); //2015-...
-        private ArrayList<String> newsTags = new ArrayList<String>(); //"someString"
+        private ArrayList<String> newsTags = new ArrayList<String>(); //"someStrings"
 
 
         @SuppressLint("ClickableViewAccessibility")
@@ -219,6 +209,8 @@ public class NewsActivity extends AppCompatActivity{
                     ArrayList<SelectorsModel> monthModel = monthSelectorAdapter.getModel();
                     ArrayList<SelectorsModel> yearModel = yearSelectorAdapter.getModel();
                     //ArrayList<SelectorsModel> tagsModel = tagsSelectorAdapter.getModel();
+                    //очищаем, чтобы результат нажатий на кнопку "ПРИМЕНИТЬ" и выбранных фильтров
+                    //не накладывался сам на себя
                     monthTags.clear();
                     yearTags.clear();
                     newsTags.clear();
@@ -290,35 +282,53 @@ public class NewsActivity extends AppCompatActivity{
 
         @Override
         protected Void doInBackground(Void... voids){
+            //ArrayList<String> years, months, tags;
             String title, tag, pubDate, description, mainImageUrl;
             Bitmap mainImage;
             JSONArray otherImages;
             String fullText;
-            String type = "custom";
+            String requestType = "default";// здесь - не менять, устанавливается в RequestSender.getNews()
+            String request = null;
 
-
-            String tmp = RequestSender.getNews(NewsActivity.this, "default",
-                        "all", "all", "all", 1);
+            if(yearTags.isEmpty()){
+                yearTags.add("all");
+                System.out.println("year is empty" + " " + yearTags.get(0) + " size " + yearTags.size());
+            }
+            if(monthTags.isEmpty()){
+                monthTags.add("all");
+                System.out.println("month is empty" + " " + monthTags.get(0) + " size " + monthTags.size());
+            }
+            if(newsTags.isEmpty()){
+                newsTags.add("all");
+                System.out.println("tag is empty" + " " + newsTags.get(0) + " size " + newsTags.size());
+            }
+            try {
+                request = RequestSender.getNews(NewsActivity.this, requestType,
+                            yearTags, monthTags, newsTags, 1);
+            } catch (JSONException e) {
+                // TODO: 13.08.2020 change the exception
+                e.printStackTrace();
+            }
 
             JSONObject answer;
             // TODO: 09.08.2020 \ // fill the tags list
 
 
             try {
-                answer = new JSONObject(tmp);
+                answer = new JSONObject(request);
             } catch (JSONException e) {
-                System.out.println(tmp);
+                System.out.println(request);
                 errorMessage = "Ошибка при подключении к серверу";
                 return null;
             }
 
             try {
                 if (answer.getString("status") == "false"){
-                    errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло)";
+                    errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло #1)";
                     return null;
                 }
             } catch (JSONException e) {
-                errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло)";
+                errorMessage = "Неизвестная ошибка (мы сами не знаем, как так вышло #2)";
                 return null;
             }
 
@@ -332,8 +342,8 @@ public class NewsActivity extends AppCompatActivity{
 
             for (int i = 0; i < body.names().length(); i++) {
                 try {
-                    String key = body.names().getString(i);
-                    JSONObject item = body.getJSONObject(key);
+                    String index = body.names().getString(i);
+                    JSONObject item = body.getJSONObject(index);
                     title = item.getString("news_title");
                     tag = item.getString("news_tag");
                     pubDate = item.getString("news_pub_date");
@@ -342,11 +352,11 @@ public class NewsActivity extends AppCompatActivity{
                     fullText = item.getString("news_main_text");
                     otherImages = item.getJSONArray("news_img_gallery");
                 } catch (JSONException e) {
-                    errorMessage = "Неизвестная ошибка (чо-та с get в цикле)";
+                    errorMessage = "Неизвестная ошибка при получении аттрибута" +
+                            " новости из списка новостей";
                     continue;
                 }
                 try {
-
                     FutureTarget<Bitmap> futureTarget =
                             Glide.with(NewsActivity.this)
                                     .asBitmap()

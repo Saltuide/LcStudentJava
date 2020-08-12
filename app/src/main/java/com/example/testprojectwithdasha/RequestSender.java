@@ -192,35 +192,54 @@ public class RequestSender {
         return "Инфа о какой-то группе не добавилась";
     }
 
-    public static String getNews(Activity context, String type, String year, String month,
-                                 String tag, int page){
-        String yearStr = "";
-        String monthStr = "";
-        String tagStr = "";
+    public static String getNews(Activity context, String type, ArrayList<String> year, ArrayList<String> month,
+                                 ArrayList<String> tag, int page) throws JSONException {
+        String yearArrayToStr = "";
+        String monthArrayToStr = "";
+        String tagArrayToStr = "";
         JSONObject jsonObject = new JSONObject();
-        ArrayList<String> yearr = new ArrayList<String>();
-        yearr.add("2019");
-        yearr.add("2020");
-        try{
-            if(type == "defaultt") jsonObject.put("type", type);
-//            else{
-//                if(year.length != 0){
-//                    for(int i = 0; i < year.length; i++){
-//                        yearStr += year[i] + ",";
-//                    }
-//                } else{
-//                    yearStr = "all";
-//                }
-            else{
-                jsonObject.put("type", type="custom");
-                jsonObject.put("year", yearr);
-                jsonObject.put("month", month);
-                jsonObject.put("tag", tag);
+//        ArrayList<String> year = new ArrayList<String>();
+//        year.add("2019");
+//        year.add("2020");
+        try{// TODO: 13.08.2020 fix costyl
+            if(type == "defaultt"){
+                jsonObject.put("type", type);
+            }else{
+                type = "custom";
+                if(year.get(0) != "all"){
+                    for(int i = 0; i < year.size(); i++){
+                        yearArrayToStr += year.get(i) + ",";
+                    }
+                } else{
+                    yearArrayToStr = "all";
+                }
+
+                if(month.get(0) != "all"){
+                    for(int i = 0; i < year.size(); i++){
+                        monthArrayToStr += month.get(i) + ",";
+                    }
+                } else{
+                    monthArrayToStr = "all";
+                }
+
+                if(tag.get(0) != "all"){
+                    for(int i = 0; i < tag.size(); i++){
+                        tagArrayToStr += month.get(i) + ",";
+                    }
+                } else{
+                    tagArrayToStr = "all";
+                }
+
+                jsonObject.put("type", type);
+                jsonObject.put("year", yearArrayToStr);
+                jsonObject.put("month", monthArrayToStr);
+                jsonObject.put("tag", tagArrayToStr);
                 jsonObject.put("current_page", page);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        System.out.println("список годов выглядит так: " + jsonObject.get("year"));
         String stringBody = jsonObject.toString();
         String newsLink =  context.getResources().getString(R.string.get_news);
         String postRequest = context.getResources().getString(R.string.post_request);
