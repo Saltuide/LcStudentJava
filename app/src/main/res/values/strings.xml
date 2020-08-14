@@ -10,7 +10,7 @@
     <string name="get_news">http://10.0.2.2:8000/news_module/</string>
     <string name="verification_link">http://10.0.2.2:8000/verification/</string>
     <string name="openNewsItemBtnTitle">П о с м о т р е т ь</string>
-    <string name="filter_filler">Ф И Л Ь Т Р</string>
+    <string name="filter_filler">Ф и л ь т р</string>
     <string name="filter_apply_button">ПРИМЕНИТЬ</string>
 
 
