@@ -18,6 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class RequestSender {
     public static String requestSender(String link, String body, String requestType){
         URL url;
         try {
-             url = new URL(link);
+            url = new URL(link);
         } catch (MalformedURLException e) {
             return "Проблема в ссылке";
         }
@@ -81,14 +82,10 @@ public class RequestSender {
     }
 
     public static String requestLogin(Activity context, String login,
-                                                   String password) {
+                                      String password) {
         JSONObject body = new JSONObject();
         String validLogin;
-        try{
-             validLogin = new String(login.getBytes("UTF-8"), "ISO-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            return "Логин содержит некорректные символы";
-        }
+        validLogin = new String(login.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
 
         try {
             body.put("email", validLogin);
@@ -108,7 +105,7 @@ public class RequestSender {
     }
 
     public static String requestRegistration(Activity context, String login,
-                                                          String password){
+                                             String password){
         JSONObject body = new JSONObject();
         try {
             body.put("email", login);
@@ -143,7 +140,7 @@ public class RequestSender {
 
         return response;
     }
-    
+
     public static String  getGroupsByUser (Activity context, String email){
         //email ="admin";
         SharedPreferences.Editor ed = AboutAppActivity.sPref.edit();
@@ -192,56 +189,47 @@ public class RequestSender {
         return "Инфа о какой-то группе не добавилась";
     }
 
-    public static String getNews(Activity context, String type, ArrayList<String> year, ArrayList<String> month,
+    public static String getNews(Activity context, ArrayList<String> year, ArrayList<String> month,
                                  ArrayList<String> tag, int page) throws JSONException {
         String yearArrayToStr = "";
         String monthArrayToStr = "";
         String tagArrayToStr = "";
-        JSONObject jsonObject = new JSONObject();
-//        ArrayList<String> year = new ArrayList<String>();
-//        year.add("2019");
-//        year.add("2020");
-        try{// TODO: 13.08.2020 fix costyl
-            if(type == "default"){
-                System.out.println("here");
-                jsonObject.put("type", type);
-            }else{
-                type = "custom";
-                if(year.get(0) != "all"){
-                    for(int i = 0; i < year.size(); i++){
-                        yearArrayToStr += year.get(i) + ",";
-                    }
-                } else{
-                    yearArrayToStr = "all";
-                }
 
-                if(month.get(0) != "all"){
-                    for(int i = 0; i < year.size(); i++){
-                        monthArrayToStr += month.get(i) + ",";
-                    }
-                } else{
-                    monthArrayToStr = "all";
-                }
-
-                if(tag.get(0) != "all"){
-                    for(int i = 0; i < tag.size(); i++){
-                        tagArrayToStr += month.get(i) + ",";
-                    }
-                } else{
-                    tagArrayToStr = "all";
-                }
-
+        if(!year.get(0).equals("all")){
+            for(int i = 0; i < year.size() - 1 ; i++){
+                yearArrayToStr += year.get(i) + ",";
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            yearArrayToStr += year.get(year.size() - 1);
+        } else {
+            yearArrayToStr = "all";
         }
-        jsonObject.put("type", type);
+
+        if(!month.get(0).equals("all")){
+            for(int i = 0; i < month.size() - 1 ; i++){
+                monthArrayToStr += month.get(i) + ",";
+            }
+            monthArrayToStr += month.get(month.size() - 1);
+        } else {
+            monthArrayToStr = "all";
+        }
+
+        if(!tag.get(0).equals("all")){
+            for(int i = 0; i < tag.size() - 1 ; i++){
+                tagArrayToStr += tag.get(i) + ",";
+            }
+            tagArrayToStr += tag.get(tag.size() - 1);
+        } else {
+            tagArrayToStr = "all";
+        }
+        String tagArrayToStr1 = new String(tagArrayToStr.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+
+        System.out.println("tag list after choice "+tagArrayToStr);
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("year", yearArrayToStr);
         jsonObject.put("month", monthArrayToStr);
-        jsonObject.put("tag", tagArrayToStr);
+        jsonObject.put("tag", tagArrayToStr1);
         jsonObject.put("current_page", page);
-        
-        System.out.println("список годов выглядит так: " + jsonObject.get("year"));
+
         String stringBody = jsonObject.toString();
         String newsLink =  context.getResources().getString(R.string.get_news);
         String postRequest = context.getResources().getString(R.string.post_request);
@@ -251,20 +239,20 @@ public class RequestSender {
     }
 
     public static String verification (Activity context, String email, String name, String surname,
-                                        String middleName, String birthday, String passport){
+                                       String middleName, String birthday, String passport){
 
 
         JSONObject jsonObject = new JSONObject();
 
         try {
-                jsonObject.put("email", email);
-                jsonObject.put("surname", surname);
-                jsonObject.put("name", name);
-                jsonObject.put("middle_name", middleName);
-                jsonObject.put("date_of_birth", birthday);
-                jsonObject.put("last_numbers_passport", passport);
-            } catch (JSONException e) {
-                System.out.println("ALO NAHUI");
+            jsonObject.put("email", email);
+            jsonObject.put("surname", surname);
+            jsonObject.put("name", name);
+            jsonObject.put("middle_name", middleName);
+            jsonObject.put("date_of_birth", birthday);
+            jsonObject.put("last_numbers_passport", passport);
+        } catch (JSONException e) {
+            System.out.println("ALO NAHUI");
         }
 
         String stringBody = jsonObject.toString();

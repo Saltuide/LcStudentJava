@@ -4,35 +4,26 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.Target;
 import com.example.testprojectwithdasha.adapters.NewsAdapter;
-import com.example.testprojectwithdasha.adapters.SpinnerAdapter;
 import com.example.testprojectwithdasha.adapters.SpinnerSelectorAdapter;
 import com.example.testprojectwithdasha.classes.News;
 import com.example.testprojectwithdasha.classes.RecyclerItemClickListener;
@@ -59,12 +50,18 @@ public class NewsActivity extends AppCompatActivity{
     private Button navigGoToRasp, navigGoToNews, navigGoToMenu, btn;
     private NewsFragment currentNews;
     private RecyclerView mRecyclerView;
-    private SpinnerSelectorAdapter yearSelectorAdapter, monthSelectorAdapter, tagSelectorAdapter;
+    private SpinnerSelectorAdapter yearSelectorAdapter, monthSelectorAdapter, tagsSelectorAdapter;
     private List<SelectorsModel> mModelList;
     private Spinner monthsSpinner, yearSpinner, tagsSpinner;
     private int filterUsageCounter, currentYear;
     private Calendar calendar;
-    private Toolbar tool_title;
+
+    private ArrayList<String> selectedMonthTags = new ArrayList<String>();//1-12
+    private ArrayList<String> selectedYearTags = new ArrayList<String>(); //2015-...
+    private ArrayList<String> selectedNewsTags = new ArrayList<String>(); //"someStrings"
+
+    private JSONArray tagList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,21 +91,41 @@ public class NewsActivity extends AppCompatActivity{
             }
         });
 
+        Button filterButton = findViewById(R.id.filterButton);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<SelectorsModel> monthModel = monthSelectorAdapter.getModel();
+                ArrayList<SelectorsModel> yearModel = yearSelectorAdapter.getModel();
+                ArrayList<SelectorsModel> tagsModel = tagsSelectorAdapter.getModel();
+                //очищаем, чтобы результат нажатий на кнопку "ПРИМЕНИТЬ" и выбранных фильтров
+                //не накладывался сам на себя
+                selectedMonthTags.clear();
+                selectedYearTags.clear();
+                selectedNewsTags.clear();
 
-        calendar = Calendar.getInstance();
-        currentYear = calendar.get(Calendar.YEAR);
-        yearSpinner = (Spinner)findViewById(R.id.yearFilterSpinner);
-        yearSelectorAdapter = new SpinnerSelectorAdapter(this, getListData("months"));
-        yearSpinner.setAdapter(yearSelectorAdapter);
-
-        monthsSpinner = (Spinner)findViewById(R.id.monthFilterSpinner);
-        monthSelectorAdapter = new SpinnerSelectorAdapter(this, getListData("years"));
-        monthsSpinner.setAdapter(monthSelectorAdapter);
-
-        tagsSpinner = (Spinner)findViewById(R.id.tagFilterSpinner);
-        tagSelectorAdapter = new SpinnerSelectorAdapter(this, getListData("tags"));
-        tagsSpinner.setAdapter(tagSelectorAdapter);
-
+                for (int i = 0; i < yearModel.size(); i++) {
+                    if(yearModel.get(i).isSelected()){
+                        System.out.println("Выбрано : " + yearModel.get(i).getText());
+                        selectedYearTags.add(yearModel.get(i).getText());
+                    }
+                }
+                for (int i = 0; i < monthModel.size(); i++) {
+                    if(monthModel.get(i).isSelected()){
+                        System.out.println("Выбрано : " + monthModel.get(i).getText());
+                        selectedMonthTags.add(Integer.toString(i));
+                    }
+                }
+                for (int i = 0; i < tagsModel.size(); i++) {
+                    if(tagsModel.get(i).isSelected()){
+                        System.out.println("Выбрано : " + tagsModel.get(i).getText());
+                        selectedNewsTags.add(tagsModel.get(i).getText());
+                    }
+                }
+                SetData s1 = new SetData();
+                s1.execute();
+            }
+        });
 
 
         setData = new SetData();
@@ -131,6 +148,14 @@ public class NewsActivity extends AppCompatActivity{
                 break;
             case "tags":
                 att.add("Тег");
+                for(int i = 0; i < tagList.length(); i++){
+                    try {
+                        att.add(tagList.getString(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        continue;
+                    }
+                }
                 break;
         }
         for (int i = 0; i < att.size(); i++) {
@@ -197,44 +222,17 @@ public class NewsActivity extends AppCompatActivity{
 
     class SetData extends AsyncTask<Void, Void, Void>{
 
+        public void selfRestart() {
+            setData = new SetData();
+        }
+
         private String errorMessage = "";
-        private ArrayList<String> monthTags = new ArrayList<String>();//1-12
-        private ArrayList<String> yearTags = new ArrayList<String>(); //2015-...
-        private ArrayList<String> newsTags = new ArrayList<String>(); //"someStrings"
+
 
 
         @SuppressLint("ClickableViewAccessibility")
         protected void onPreExecute(){
             super.onPreExecute();
-
-            btn = (Button)findViewById(R.id.filterButton);
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ArrayList<SelectorsModel> monthModel = monthSelectorAdapter.getModel();
-                    ArrayList<SelectorsModel> yearModel = yearSelectorAdapter.getModel();
-                    //ArrayList<SelectorsModel> tagsModel = tagsSelectorAdapter.getModel();
-                    //очищаем, чтобы результат нажатий на кнопку "ПРИМЕНИТЬ" и выбранных фильтров
-                    //не накладывался сам на себя
-                    monthTags.clear();
-                    yearTags.clear();
-                    newsTags.clear();
-                    for (int i = 0; i < monthModel.size(); i++) {
-                        if(monthModel.get(i).isSelected()){
-                            System.out.println(monthModel.get(i).getText());
-                            monthTags.add(String.valueOf(i));
-                        }
-                    }
-                    for (int i = 0; i < yearModel.size(); i++) {
-                        if(yearModel.get(i).isSelected()){
-                            System.out.println(yearModel.get(i).getText());
-                            yearTags.add(yearModel.get(i).getText());
-                        }
-                    }
-                    // TODO: 09.08.2020 // add tags filler
-                    doInBackground();
-                }
-            });
 
 
             navigGoToRasp = (Button) findViewById(R.id.goto_rasp);
@@ -287,36 +285,36 @@ public class NewsActivity extends AppCompatActivity{
 
         @Override
         protected Void doInBackground(Void... voids){
-            //ArrayList<String> years, months, tags;
             String title, tag, pubDate, description, mainImageUrl;
             Bitmap mainImage;
             JSONArray otherImages;
             String fullText;
-            String requestType = "default";// здесь - не менять, устанавливается в RequestSender.getNews()
             String request = null;
 
-            if(yearTags.isEmpty()){
-                yearTags.add("all");
-                System.out.println("year is empty" + " " + yearTags.get(0) + " size " + yearTags.size());
+            if(selectedYearTags.isEmpty()){
+                selectedYearTags.add("all");
+                System.out.println("year is empty" + " " + selectedYearTags.get(0) + ", size :" + selectedYearTags.size());
             }
-            if(monthTags.isEmpty()){
-                monthTags.add("all");
-                System.out.println("month is empty" + " " + monthTags.get(0) + " size " + monthTags.size());
+
+            if(selectedMonthTags.isEmpty()){
+                selectedMonthTags.add("all");
+                System.out.println("month is empty" + " " + selectedMonthTags.get(0) + ", size :" + selectedMonthTags.size());
             }
-            if(newsTags.isEmpty()){
-                newsTags.add("all");
-                System.out.println("tag is empty" + " " + newsTags.get(0) + " size " + newsTags.size());
+            if(selectedNewsTags.isEmpty()){
+                selectedNewsTags.add("all");
+                System.out.println("tag is empty" + " " + selectedNewsTags.get(0) + ", size :" + selectedNewsTags.size());
             }
+
+            news.clear();
             try {
-                request = RequestSender.getNews(NewsActivity.this, requestType,
-                            yearTags, monthTags, newsTags, 1);
+                request = RequestSender.getNews(NewsActivity.this, selectedYearTags,
+                        selectedMonthTags, selectedNewsTags, 1);
             } catch (JSONException e) {
                 // TODO: 13.08.2020 change the exception
                 e.printStackTrace();
             }
 
             JSONObject answer;
-            // TODO: 09.08.2020 \ // fill the tags list
 
 
             try {
@@ -341,7 +339,14 @@ public class NewsActivity extends AppCompatActivity{
             try {
                 body = answer.getJSONObject("news_array");
             } catch (JSONException e) {
-                errorMessage = "Неизвестный ответ сервера";
+                errorMessage = "Неизвестный ответ сервера #1";
+                return null;
+            }
+
+            try {
+                tagList = answer.getJSONArray("tags");
+            } catch (JSONException e) {
+                errorMessage = "Неизвестный ответ сервера #2";
                 return null;
             }
 
@@ -361,6 +366,7 @@ public class NewsActivity extends AppCompatActivity{
                             " новости из списка новостей";
                     continue;
                 }
+
                 try {
                     FutureTarget<Bitmap> futureTarget =
                             Glide.with(NewsActivity.this)
@@ -376,9 +382,10 @@ public class NewsActivity extends AppCompatActivity{
                     mainImage = BitmapFactory.decodeResource(NewsActivity.this.getResources(),
                             R.drawable.error_pic);
                 }
-                    news.add(new News(title, tag, pubDate, description, mainImage, fullText, otherImages));
-                }
+                news.add(new News(title, tag, pubDate, description, mainImage, fullText, otherImages));
+            }
 
+            System.out.println("sdfdgfhgjnhkgjlhkjl,ghmfgndbsvac " + news.size());
             return null;
         }
 
@@ -389,24 +396,40 @@ public class NewsActivity extends AppCompatActivity{
             RecyclerView recyclerView = findViewById(R.id.list);
             NewsAdapter adapter = new NewsAdapter(NewsActivity.this, news);
 
+
+            calendar = Calendar.getInstance();
+            currentYear = calendar.get(Calendar.YEAR);
+            yearSpinner = (Spinner)findViewById(R.id.yearFilterSpinner);
+            yearSelectorAdapter = new SpinnerSelectorAdapter(NewsActivity.this, getListData("years"));
+            yearSpinner.setAdapter(yearSelectorAdapter);
+
+            monthsSpinner = (Spinner)findViewById(R.id.monthFilterSpinner);
+            monthSelectorAdapter = new SpinnerSelectorAdapter(NewsActivity.this, getListData("months"));
+            monthsSpinner.setAdapter(monthSelectorAdapter);
+
+            tagsSpinner = (Spinner)findViewById(R.id.tagFilterSpinner);
+            tagsSelectorAdapter = new SpinnerSelectorAdapter(NewsActivity.this, getListData("tags"));
+            tagsSpinner.setAdapter(tagsSelectorAdapter);
+
+
             recyclerView.setAdapter(adapter);
             recyclerView.addOnItemTouchListener(
                     new RecyclerItemClickListener(NewsActivity.this, recyclerView ,
                             new RecyclerItemClickListener.OnItemClickListener() {
 
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            NewsImgGalleryThread secondThread = new NewsImgGalleryThread();
-                            AppBarLayout appBarLayout = findViewById(R.id.app_bar);
-                            appBarLayout.setVisibility(View.INVISIBLE);
-                            secondThread.execute(position);
-                        }
+                                @Override
+                                public void onItemClick(View view, int position) {
+                                    NewsImgGalleryThread secondThread = new NewsImgGalleryThread();
+                                    AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+                                    appBarLayout.setVisibility(View.INVISIBLE);
+                                    secondThread.execute(position);
+                                }
 
-                        @Override
-                        public void onLongItemClick(View view, int position) {
+                                @Override
+                                public void onLongItemClick(View view, int position) {
 
-                        }
-                    })
+                                }
+                            })
             );
 
             if (!errorMessage.isEmpty()){
@@ -416,7 +439,7 @@ public class NewsActivity extends AppCompatActivity{
             }
         }
     }
-// подгрузка галереи отдельно от главных картинок
+    // подгрузка галереи отдельно от главных картинок
     class NewsImgGalleryThread extends AsyncTask<Integer, Void, Void>{
         Bitmap imageFromGallery;
         private int newsPositionToShow;
