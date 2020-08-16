@@ -47,18 +47,18 @@ public class SpinnerSelectorAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.selector_item, parent, false);
         }
 
-
+        //тут цвета подумать вечером с Сёмой
         final SelectorsModel model = (SelectorsModel) getItem(position);
         TextView text = view.findViewById(R.id.selector_txt);
         text.setText(getString(model));
-        view.setBackgroundColor(model.isSelected() ? Color.rgb(255, 0, 0) : Color.rgb(0, 255, 0));
+        view.setBackgroundResource(model.isSelected() ? R.drawable.spinner_item_selected : R.drawable.spinner_item);
 
         if (position > 0) {
             text.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                         model.setSelected(!model.isSelected());
-                        view.setBackgroundColor(model.isSelected() ? Color.rgb(255, 0, 0) : Color.rgb(0, 255, 0));
+                    view.setBackgroundResource(model.isSelected() ? R.drawable.spinner_item_selected : R.drawable.spinner_item);
                 }
             });
         }

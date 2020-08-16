@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        tools:text="TextView"
-        tools:ignore="MissingConstraints" />
+        android:textColor="@color/text_color"
+        tools:ignore="MissingConstraints"
+        tools:text="TextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
